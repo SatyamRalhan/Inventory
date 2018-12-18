@@ -1,7 +1,7 @@
 package com.example.satyam.inventory.misc;
 
-import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.satyam.inventory.Addquantity;
+import com.example.satyam.inventory.BuildConfig;
 import com.example.satyam.inventory.Home;
 import com.example.satyam.inventory.Searchable;
 
@@ -18,7 +19,8 @@ import java.util.List;
 
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
-    Context mContext;
+
+
     private String[] mDataset;
 
 
@@ -70,6 +72,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
     public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        SharedPreferences preferences;
+        SharedPreferences.Editor editor;
         // each data item is just a string in this case
         public TextView mTextView;
         public MyViewHolder(TextView v) {
@@ -81,13 +85,16 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         @Override
         public void onClick(View view) {
             if(view instanceof TextView){
+                preferences = view.getContext().getSharedPreferences(BuildConfig.APPLICATION_ID, view.getContext().MODE_PRIVATE);
+                editor = preferences.edit();
                 if(view.getContext() instanceof Searchable){
                 Intent intent=new Intent(view.getContext(),Addquantity.class);
                 intent.putExtra("itemname",((TextView) view).getText());
                 view.getContext().startActivity(intent);}
                 else{
                     Intent intent=new Intent(view.getContext(),Home.class);
-                    intent.putExtra("outletname",((TextView) view).getText());
+                    editor.putString("Currentoutlet", ((TextView) view).getText().toString());
+                    editor.apply();
                     view.getContext().startActivity(intent);
                 }
 //                LayoutInflater mInflater = (LayoutInflater) view.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);

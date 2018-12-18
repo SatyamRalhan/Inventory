@@ -72,10 +72,10 @@ public class Home extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         ImageButton imageButton=findViewById(R.id.ib1);
-        preferences=this.getSharedPreferences(BuildConfig.APPLICATION_ID,this.MODE_PRIVATE);
+        preferences = this.getSharedPreferences(BuildConfig.APPLICATION_ID, MODE_PRIVATE);
         editor=preferences.edit();
-        drawerLayout=(DrawerLayout)findViewById(R.id.dwlay1);
-        navigationView=(NavigationView)findViewById(R.id.navview1);
+        drawerLayout = findViewById(R.id.dwlay1);
+        navigationView = findViewById(R.id.navview1);
         imageButton.setOnClickListener(navlistener);
         inventorytaken=false;
         IfInventoryTaken();
@@ -105,8 +105,9 @@ public class Home extends AppCompatActivity {
                                 public void onResponse(JSONArray respons)
                                 {
                                     try {
-                                        textView.setText(respons.getJSONObject(0).getString("name"));
                                         editor.putString("Currentoutlet",respons.getJSONObject(0).getString("name"));
+                                        textView.setText(preferences.getString("Currentoutlet", null));
+
                                     }
                                     catch (JSONException e){}
                                     editor.putString("outlets",respons.toString());
@@ -162,18 +163,5 @@ public class Home extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onNewIntent(Intent intent) {
-        setIntent(intent);
-        Bundle bundle=getIntent().getExtras();
-        String outlet_name=bundle.getString("outletname",null);
-        if(!(outlet_name==null)){
-            if(!(outlet_name==textView.getText())){
-                    textView.setText(outlet_name);
-                    editor.putString("Currentoutlet",outlet_name);
-                    editor.apply();
-            }
-        }
 
-    }
 }
