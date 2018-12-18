@@ -1,0 +1,18 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+    <style name="doneright" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="android:src">@drawable/done_white</item>
+        <item name="android:background">@color/green</item>
+    </style>
+    <style name="notdonewrong" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="android:src">@drawable/close_white</item>
+        <item name="android:background">@color/red</item>
+    </style>
+</resources>
