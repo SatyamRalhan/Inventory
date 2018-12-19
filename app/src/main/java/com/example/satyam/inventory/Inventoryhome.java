@@ -25,6 +25,7 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.example.satyam.inventory.misc.VolleyController;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -43,6 +44,8 @@ public class Inventoryhome extends AppCompatActivity {
     VolleyController volleyController;
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
+    String currentoutlet;
+    String currentoutletid;
 /////////////////   Next Activity button    ////////////////////////
     View.OnClickListener searchlistener=new View.OnClickListener() {
         @Override
@@ -134,13 +137,27 @@ public class Inventoryhome extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inventoryhome);
-        preferences=this.getSharedPreferences(BuildConfig.APPLICATION_ID,this.MODE_PRIVATE);
+        preferences = this.getSharedPreferences(BuildConfig.APPLICATION_ID, MODE_PRIVATE);
         editor=preferences.edit();
         String outlets=preferences.getString("outlets",null);
+        String currentoutlet = preferences.getString("Currentoutlet", null);
+
+        try {
+            JSONArray jsonArray = new JSONArray(outlets);
+            for (int i = 0; i < jsonArray.length(); i++) {
+                if (currentoutlet.equals(jsonArray.getJSONObject(i).getString("name"))) {
+                    currentoutletid = jsonArray.getJSONObject(i).getString("_id");
+                    Log.d("IDCHECKING", currentoutletid);
+                }
+            }
+
+        } catch (JSONException e) {
+            Log.d("exceptionError", e.getMessage());
+        }
 /////////////////////   Side Navigation   //////////////////////////
         ImageButton imageButton=findViewById(R.id.ib1);
-        drawerLayout=(DrawerLayout)findViewById(R.id.dwlay2);
-        navigationView=(NavigationView)findViewById(R.id.navview2);
+        drawerLayout = findViewById(R.id.dwlay2);
+        navigationView = findViewById(R.id.navview2);
         imageButton.setOnClickListener(navlistener);
 ////////////////////////////////////////////////////////////////////
 ////////////////////   taking date and time   //////////////////////
@@ -156,12 +173,16 @@ public class Inventoryhome extends AppCompatActivity {
         b1=findViewById(R.id.inventorybutton1);
         b1.setOnClickListener(searchlistener);
 ////////////////////////////////////////////////////////////////////
+        String url = getString(R.string.outletproducts) + currentoutletid;
+        Log.d("checkingurl", url);
         JsonArrayRequest jsonObjRequest1 = new JsonArrayRequest
-                (Request.Method.GET, getString(R.string.user_info),null ,new Response.Listener<JSONArray>()
+                (Request.Method.GET, url, null, new Response.Listener<JSONArray>()
                 {
                     @Override
-                    public void onResponse(JSONArray respons)
+                    public void onResponse(JSONArray outletproducts)
                     {
+                        editor.putString("outletproducts", outletproducts.toString());
+                        editor.apply();
                         Log.d("secondresponsechecking","getting response");
                     }
                 },

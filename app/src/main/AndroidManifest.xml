@@ -34,8 +34,11 @@
             android:name="android.app.default_searchable"
             android:value=".Searchable" />
 
-        <activity android:name=".Addquantity" />
-        <activity android:name=".Outletchange"></activity>
+        <activity
+            android:name=".Addquantity"
+            android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".Outletchange" />
+        <activity android:name=".Cartreview"></activity>
     </application>
 
 </manifest>

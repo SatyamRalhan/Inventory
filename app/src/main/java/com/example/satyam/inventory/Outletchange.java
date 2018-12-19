@@ -2,11 +2,14 @@ package com.example.satyam.inventory;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.widget.TextView;
 
 import com.example.satyam.inventory.misc.MyAdapter;
 
@@ -21,12 +24,19 @@ public class Outletchange extends AppCompatActivity {
     RecyclerView.Adapter adapter;
     SharedPreferences preferences;
     LinearLayoutCompat layout;
+    TextView toolbartext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_outletchange);
-        preferences=getSharedPreferences(BuildConfig.APPLICATION_ID,this.MODE_PRIVATE);
+        Toolbar toolbar = findViewById(R.id.tb1);
+        setSupportActionBar(toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayShowTitleEnabled(false);
+        toolbartext = findViewById(R.id.searchbartext);
+        toolbartext.setText("Select Outlet");
+        preferences = getSharedPreferences(BuildConfig.APPLICATION_ID, MODE_PRIVATE);
         ArrayList<String> list=new ArrayList<>();
         try{
             Log.d("sharedprefcheck",preferences.getString("outlets",null));

@@ -8,12 +8,4 @@
         app:showAsAction="always">
 
     </item>
-    <item
-        android:id="@+id/reviewcart"
-        android:title="Finish"
-        android:visible="true"
-        app:actionViewClass="android.widget.Button"
-        app:showAsAction="always">
-
-    </item>
 </menu>

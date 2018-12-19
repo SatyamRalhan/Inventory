@@ -3,6 +3,7 @@ package com.example.satyam.inventory;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -17,13 +18,20 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import com.example.satyam.inventory.misc.CardViewAdapter;
 import com.example.satyam.inventory.misc.MyAdapter;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Searchable extends AppCompatActivity {
+    TextView toolbartext;
     RecyclerView listView;
     LinearLayoutCompat linearLayoutCompat;
     RecyclerView.Adapter adapter;
@@ -33,6 +41,9 @@ public class Searchable extends AppCompatActivity {
     AppCompatImageButton back;
     SearchView searchView;
     RelativeLayout relativeLayout;
+    SharedPreferences preferences;
+    SharedPreferences.Editor editor;
+    JSONArray outletproduct, inforforadapter;
     SearchView.OnQueryTextListener textlistener=new SearchView.OnQueryTextListener() {
         @Override
         public boolean onQueryTextSubmit(String s) {
@@ -62,30 +73,51 @@ public class Searchable extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_searchable);
+        toolbartext = findViewById(R.id.searchbartext);
+        toolbartext.setText("Select Item");
+        //////////////////////////////
+        preferences = getSharedPreferences(BuildConfig.APPLICATION_ID, MODE_PRIVATE);
         /////////////// Search Bar
-        Toolbar toolbar=findViewById(R.id.tb1);
+        Toolbar toolbar = findViewById(R.id.tb1);
         setSupportActionBar(toolbar);
-        ActionBar actionBar=getSupportActionBar();
+        ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowTitleEnabled(false);
         //////////////////
-        relativeLayout=findViewById(R.id.addquantityscreen);
+        relativeLayout = findViewById(R.id.addquantityscreen);
         relativeLayout.setVisibility(View.GONE);
         ///////fuctionality to back button
-        back=findViewById(R.id.back_button);
+        back = findViewById(R.id.back_button);
         back.setOnClickListener(backlistener);
         //////////////////
-        strings=new String[]{"search","copy","searching","copying"};
-        result=new ArrayList<String>(Arrays.asList(strings));
+        strings = new String[]{"search", "copy", "searching", "copying"};
+        result = new ArrayList<String>(Arrays.asList(strings));
         /////////////////
-        listView=new RecyclerView(this);
+
+        try {
+            outletproduct = new JSONArray(preferences.getString("outletproducts", null));
+            inforforadapter = new JSONArray();
+            for (int i = 0; i < outletproduct.length(); i++) {
+                JSONObject object = new JSONObject();
+                object.put("name", outletproduct.getJSONObject(i).getJSONObject("product").getString("productTitle"));
+                object.put("baseunit", outletproduct.getJSONObject(i).getJSONObject("product").getString("baseUnit"));
+                object.put("skucode", outletproduct.getJSONObject(i).getJSONObject("product").getString("skuProductCode"));
+                object.put("currentstock", Integer.toString(outletproduct.getJSONObject(i).getInt("currentStock")));
+                inforforadapter.put(object);
+            }
+            Log.d("IFGETTININFO", inforforadapter.toString());
+        } catch (JSONException e) {
+        }
+        listView = new RecyclerView(this);
         listView.setId(R.id.recyclerviewid);
-        linearLayoutCompat=findViewById(R.id.linearlayout);
+        linearLayoutCompat = findViewById(R.id.linearlayout);
         linearLayoutCompat.addView(listView);
-        layoutManager=new LinearLayoutManager(this);
+        layoutManager = new LinearLayoutManager(this);
         listView.setLayoutManager(layoutManager);
         listView.setHasFixedSize(true);
-        adapter= new MyAdapter(result.toArray(new String[0]));
+
+        adapter = new CardViewAdapter(inforforadapter);
         listView.setAdapter(adapter);
+
     }
 
     @Override

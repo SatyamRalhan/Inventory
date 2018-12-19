@@ -7,5 +7,6 @@
     android:orientation="vertical"
     tools:context=".Outletchange">
 
+    <include layout="@layout/search_bar" />
 
 </android.support.v7.widget.LinearLayoutCompat>
