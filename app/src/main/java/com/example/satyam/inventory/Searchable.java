@@ -17,18 +17,17 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.satyam.inventory.misc.CardViewAdapter;
-import com.example.satyam.inventory.misc.MyAdapter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Searchable extends AppCompatActivity {
     TextView toolbartext;
@@ -44,6 +43,7 @@ public class Searchable extends AppCompatActivity {
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
     JSONArray outletproduct, inforforadapter;
+    Button reviewcart;
     SearchView.OnQueryTextListener textlistener=new SearchView.OnQueryTextListener() {
         @Override
         public boolean onQueryTextSubmit(String s) {
@@ -76,6 +76,15 @@ public class Searchable extends AppCompatActivity {
         toolbartext = findViewById(R.id.searchbartext);
         toolbartext.setText("Select Item");
         //////////////////////////////
+        reviewcart = findViewById(R.id.reviewcartbutton);
+        reviewcart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(Searchable.this, Cartreview.class);
+                startActivity(intent);
+            }
+        });
+        //////////////////////////////
         preferences = getSharedPreferences(BuildConfig.APPLICATION_ID, MODE_PRIVATE);
         /////////////// Search Bar
         Toolbar toolbar = findViewById(R.id.tb1);
@@ -89,8 +98,6 @@ public class Searchable extends AppCompatActivity {
         back = findViewById(R.id.back_button);
         back.setOnClickListener(backlistener);
         //////////////////
-        strings = new String[]{"search", "copy", "searching", "copying"};
-        result = new ArrayList<String>(Arrays.asList(strings));
         /////////////////
 
         try {
@@ -145,16 +152,23 @@ public class Searchable extends AppCompatActivity {
     }
 
     private void doMySearch(String query){
-
-        result.clear();
-        int i=strings.length;
-        for(int j=0;j<i;j++){
-            if(strings[j].contains(query)){
-                result.add(strings[j]);
+        inforforadapter = new JSONArray();
+        int i = outletproduct.length();
+        try {
+            for (int j = 0; j < i; j++) {
+                if (outletproduct.getJSONObject(j).getJSONObject("product").getString("productTitle").toLowerCase().contains(query.toLowerCase())) {
+                    JSONObject object = new JSONObject();
+                    object.put("name", outletproduct.getJSONObject(j).getJSONObject("product").getString("productTitle"));
+                    object.put("baseunit", outletproduct.getJSONObject(j).getJSONObject("product").getString("baseUnit"));
+                    object.put("skucode", outletproduct.getJSONObject(j).getJSONObject("product").getString("skuProductCode"));
+                    object.put("currentstock", Integer.toString(outletproduct.getJSONObject(j).getInt("currentStock")));
+                    inforforadapter.put(object);
+                }
             }
+        } catch (JSONException e) {
         }
-        Log.d("resultchecking",result.toString());
-        adapter= new MyAdapter(result.toArray(new String[0]));
+        Log.d("resultchecking", inforforadapter.toString());
+        adapter = new CardViewAdapter(inforforadapter);
         listView.setAdapter(adapter);
         // adapter.notifyDataSetChanged();
 
