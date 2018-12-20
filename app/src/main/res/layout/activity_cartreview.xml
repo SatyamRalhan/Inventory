@@ -7,4 +7,8 @@
     android:orientation="vertical"
     tools:context=".Cartreview">
 
+    <include
+        android:id="@+id/carttoolbar"
+        layout="@layout/search_bar" />
+
 </android.support.v7.widget.LinearLayoutCompat>

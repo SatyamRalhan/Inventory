@@ -74,6 +74,8 @@ public class Home extends AppCompatActivity {
         ImageButton imageButton=findViewById(R.id.ib1);
         preferences = this.getSharedPreferences(BuildConfig.APPLICATION_ID, MODE_PRIVATE);
         editor=preferences.edit();
+        editor.remove("Cartitems");
+        editor.apply();
         drawerLayout = findViewById(R.id.dwlay1);
         navigationView = findViewById(R.id.navview1);
         imageButton.setOnClickListener(navlistener);

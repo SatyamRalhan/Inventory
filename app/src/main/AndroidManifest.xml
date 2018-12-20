@@ -19,7 +19,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".Inventoryhome" />
-        <activity android:name=".Searchable">
+        <activity
+            android:name=".Searchable"
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />

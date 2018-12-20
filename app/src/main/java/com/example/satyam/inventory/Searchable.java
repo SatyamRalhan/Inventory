@@ -27,16 +27,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
-
 public class Searchable extends AppCompatActivity {
     TextView toolbartext;
     RecyclerView listView;
     LinearLayoutCompat linearLayoutCompat;
     RecyclerView.Adapter adapter;
     RecyclerView.LayoutManager layoutManager;
-    String[] strings;
-    ArrayList<String> result;
     AppCompatImageButton back;
     SearchView searchView;
     RelativeLayout relativeLayout;
@@ -61,7 +57,8 @@ public class Searchable extends AppCompatActivity {
         @Override
         public void onClick(View view) {
             if(searchView.isIconified()){
-                onBackPressed();
+                Intent intent = new Intent(Searchable.this, Inventoryhome.class);
+                startActivity(intent);
             }
             else{
                 searchView.setIconified(true);
@@ -109,6 +106,7 @@ public class Searchable extends AppCompatActivity {
                 object.put("baseunit", outletproduct.getJSONObject(i).getJSONObject("product").getString("baseUnit"));
                 object.put("skucode", outletproduct.getJSONObject(i).getJSONObject("product").getString("skuProductCode"));
                 object.put("currentstock", Integer.toString(outletproduct.getJSONObject(i).getInt("currentStock")));
+                object.put("_id", outletproduct.getJSONObject(i).getString("_id"));
                 inforforadapter.put(object);
             }
             Log.d("IFGETTININFO", inforforadapter.toString());
@@ -162,6 +160,7 @@ public class Searchable extends AppCompatActivity {
                     object.put("baseunit", outletproduct.getJSONObject(j).getJSONObject("product").getString("baseUnit"));
                     object.put("skucode", outletproduct.getJSONObject(j).getJSONObject("product").getString("skuProductCode"));
                     object.put("currentstock", Integer.toString(outletproduct.getJSONObject(j).getInt("currentStock")));
+                    object.put("_id", outletproduct.getJSONObject(i).getString("_id"));
                     inforforadapter.put(object);
                 }
             }
@@ -174,4 +173,9 @@ public class Searchable extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(Searchable.this, Inventoryhome.class);
+        startActivity(intent);
+    }
 }

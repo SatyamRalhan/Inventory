@@ -3,6 +3,7 @@ package com.example.satyam.inventory.misc;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,13 +34,37 @@ public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.MyView
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         try {
-            JSONObject jsonObject = mDataset.getJSONObject(position);
+            final JSONObject jsonObject = mDataset.getJSONObject(position);
             holder.name.setText(jsonObject.getString("name"));
             holder.base.setText(jsonObject.getString("baseunit"));
             holder.current.setText(jsonObject.getString("currentstock"));
             holder.skucode.setText(jsonObject.getString("skucode"));
+            holder.cardView.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View view) {
+                    Context context = view.getContext();
+                    TextView name = view.findViewById(R.id.text_cardview);
+                    TextView sku = view.findViewById(R.id.skuproductcode);
+                    TextView currentstock = view.findViewById(R.id.product_currentstock);
+                    TextView baseunit = view.findViewById(R.id.product_baseunit);
+                    Intent intent = new Intent(context, Addquantity.class);
+                    intent.putExtra("name", name.getText());
+                    intent.putExtra("skucode", sku.getText());
+                    intent.putExtra("currentstock", currentstock.getText());
+                    intent.putExtra("baseunit", baseunit.getText());
+                    try {
+                        intent.putExtra("_id", jsonObject.getString("_id"));
+                    } catch (JSONException e) {
+                    }
+                    context.startActivity(intent);
+
+                }
+            });
         } catch (JSONException e) {
         }
+
+
 //        holder.myTextView.setText(mDataset[position]);
     }
 
@@ -49,7 +74,7 @@ public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.MyView
         return mDataset.length();
     }
 
-    public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public static class MyViewHolder extends RecyclerView.ViewHolder {
         SharedPreferences preferences;
         SharedPreferences.Editor editor;
         private TextView name;
@@ -57,6 +82,7 @@ public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.MyView
         private TextView skucode;
         private TextView current;
         private TextView base;
+        private CardView cardView;
 
         public MyViewHolder(View itemView) {
             super(itemView);
@@ -65,23 +91,10 @@ public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.MyView
             skucode = itemView.findViewById(R.id.skuproductcode);
             current = itemView.findViewById(R.id.product_currentstock);
             base = itemView.findViewById(R.id.product_baseunit);
-            itemView.setOnClickListener(this);
+            cardView = itemView.findViewById(R.id.cardview_search);
+//            itemView.setOnClickListener();
         }
 
-        @Override
-        public void onClick(View view) {
-            Context context = view.getContext();
-            TextView name = view.findViewById(R.id.text_cardview);
-            TextView sku = view.findViewById(R.id.skuproductcode);
-            TextView currentstock = view.findViewById(R.id.product_currentstock);
-            TextView baseunit = view.findViewById(R.id.product_baseunit);
-            Intent intent = new Intent(context, Addquantity.class);
-            intent.putExtra("name", name.getText());
-            intent.putExtra("skucode", sku.getText());
-            intent.putExtra("currentstock", currentstock.getText());
-            intent.putExtra("baseunit", baseunit.getText());
-            context.startActivity(intent);
 
-        }
     }
 }
