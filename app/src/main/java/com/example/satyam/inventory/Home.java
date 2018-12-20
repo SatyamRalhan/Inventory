@@ -100,6 +100,11 @@ public class Home extends AppCompatActivity {
                 public void onResponse(JSONObject response)
                 {
                     Log.d("responsecheck","getting response");
+                    try {
+                        editor.putString("b_id", response.getString("_id"));
+                        editor.apply();
+                    } catch (JSONException e) {
+                    }
                     JsonArrayRequest jsonObjRequest1 = new JsonArrayRequest
                             (Request.Method.GET, getString(R.string.outlets),null ,new Response.Listener<JSONArray>()
                             {

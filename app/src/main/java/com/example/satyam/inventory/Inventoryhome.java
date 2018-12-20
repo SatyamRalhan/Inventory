@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -21,6 +22,8 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -45,6 +48,7 @@ public class Inventoryhome extends AppCompatActivity {
     SimpleDateFormat dateview=new SimpleDateFormat("dd-MM-yyyy");
     TextInputLayout textInputLayout;
     Button b1;
+    TextInputEditText refno;
     EditText textInputEditText1,textInputEditText;
     String store;
     VolleyController volleyController;
@@ -55,6 +59,8 @@ public class Inventoryhome extends AppCompatActivity {
     TextView outlet_name;
     BottomNavigationView bottomNavigationView;
     Intent intent;
+    RadioGroup radiogroup;
+    RadioButton radioButton;
     BottomNavigationView.OnNavigationItemSelectedListener bottomnavlistener = new BottomNavigationView.OnNavigationItemSelectedListener() {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
@@ -89,6 +95,14 @@ public class Inventoryhome extends AppCompatActivity {
     View.OnClickListener searchlistener=new View.OnClickListener() {
         @Override
         public void onClick(View view) {
+            editor.putString("dayoflog", textInputEditText1.getText().toString());
+            editor.putString("dateoflog", textInputEditText.getText().toString());
+            radioButton = findViewById(radiogroup.getCheckedRadioButtonId());
+            editor.putString("response", radioButton.getText().toString());
+            if (refno.getText().toString().matches("")) {
+                editor.putString("refno", refno.getText().toString());
+            }
+            editor.apply();
             Intent intent=new Intent(Inventoryhome.this,Searchable.class);
             startActivity(intent);
         }
@@ -176,10 +190,12 @@ public class Inventoryhome extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inventoryhome);
+        refno = findViewById(R.id.inventoryedit3);
         preferences = this.getSharedPreferences(BuildConfig.APPLICATION_ID, MODE_PRIVATE);
         editor=preferences.edit();
         bottomNavigationView = findViewById(R.id.bottom1);
         bottomNavigationView.setOnNavigationItemSelectedListener(bottomnavlistener);
+        radiogroup = findViewById(R.id.radiogroup);
         String outlets=preferences.getString("outlets",null);
         String currentoutlet = preferences.getString("Currentoutlet", null);
         outlet_name = findViewById(R.id.outlet_name);
@@ -189,6 +205,8 @@ public class Inventoryhome extends AppCompatActivity {
             for (int i = 0; i < jsonArray.length(); i++) {
                 if (currentoutlet.equals(jsonArray.getJSONObject(i).getString("name"))) {
                     currentoutletid = jsonArray.getJSONObject(i).getString("_id");
+                    editor.putString("outlet_id", currentoutletid);
+                    editor.apply();
                     Log.d("IDCHECKING", currentoutletid);
                 }
             }
