@@ -44,6 +44,7 @@ public class Inventoryhome extends AppCompatActivity {
     Calendar c=Calendar.getInstance();
     Date date=c.getTime();
     SimpleDateFormat dateFormat= new SimpleDateFormat("dd-MM-yyyy hh:mm a");
+    SimpleDateFormat dateoflogformat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'");
     String final_date=dateFormat.format(date);
     SimpleDateFormat dateview=new SimpleDateFormat("dd-MM-yyyy");
     TextInputLayout textInputLayout;
@@ -59,6 +60,7 @@ public class Inventoryhome extends AppCompatActivity {
     TextView outlet_name;
     BottomNavigationView bottomNavigationView;
     Intent intent;
+    String strorereverse;
     RadioGroup radiogroup;
     RadioButton radioButton;
     BottomNavigationView.OnNavigationItemSelectedListener bottomnavlistener = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -95,8 +97,7 @@ public class Inventoryhome extends AppCompatActivity {
     View.OnClickListener searchlistener=new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            editor.putString("dayoflog", textInputEditText1.getText().toString());
-            editor.putString("dateoflog", textInputEditText.getText().toString());
+
             radioButton = findViewById(radiogroup.getCheckedRadioButtonId());
             editor.putString("response", radioButton.getText().toString());
             if (refno.getText().toString().matches("")) {
@@ -123,6 +124,8 @@ public class Inventoryhome extends AppCompatActivity {
                     Log.d("idcompaison",Integer.toString(R.id.te2));
                     Log.d("idcompaison",Integer.toString(view.getId()));
                     textInputEditText1.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                    editor.putString("dayoflog", year + "-" + (monthOfYear + 1) + "-" + dayOfMonth + "T00:00:00Z");
+                    editor.apply();
 
                 }
             }, mYear, mMonth, mDay);
@@ -139,22 +142,39 @@ public class Inventoryhome extends AppCompatActivity {
             int minute = c.get(Calendar.MINUTE);
 
 
+
             TimePickerDialog timePickerDialog=new TimePickerDialog(Inventoryhome.this, new TimePickerDialog.OnTimeSetListener() {
                 @Override
                 public void onTimeSet(TimePicker timePicker, int i, int i1) {
-                    if (i==0){
-                        i=12;
-                        store=store+" "+i+":"+i1+"am" ;
+                    String min, hr, dateoflog, a;
+                    if (i1 < 10) {
+                        min = "0" + i1;
+                    } else {
+                        min = Integer.toString(i1);
                     }
-                    else if (i<12){
-                        store=store+" "+i+":"+i1+"am" ;
+                    if (i < 10) {
+                        hr = "0" + i;
+                    } else {
+                        hr = Integer.toString(i);
                     }
-                    else if (i==12){
-                        store=store+" "+i+":"+i1+"pm" ;
+                    dateoflog = strorereverse + "T" + hr + ":" + min + ":00Z";
+                    editor.putString("dateoflog", dateoflog);
+                    editor.apply();
+                    if (i == 0) {
+                        i = 12;
+                        a = "am";
+                    } else if (i < 12) {
+                        a = "am";
+                    } else if (i == 12) {
+                        a = "pm";
+                    } else {
+                        i = i - 12;
+                        a = "pm";
                     }
-                    else{
-                        i=i-12;
-                        store=store+" "+i+":"+i1+"pm" ;
+                    if (i < 10) {
+                        store = store + " 0" + i + ":" + min + a;
+                    } else {
+                        store = store + " " + i + ":" + min + a;
                     }
                     textInputEditText.setText(store);
                 }
@@ -166,6 +186,8 @@ public class Inventoryhome extends AppCompatActivity {
                 public void onDateSet(DatePicker view, int year,
                                       int monthOfYear, int dayOfMonth) {
                     store=dayOfMonth + "-" + (monthOfYear + 1) + "-" + year;
+                    strorereverse = year + "-" + (monthOfYear + 1) + "-" + dayOfMonth;
+
                 }
             }, mYear, mMonth, mDay);
 
@@ -228,6 +250,9 @@ public class Inventoryhome extends AppCompatActivity {
         textInputEditText1.setText(dateview.format(date));
         textInputEditText.setOnClickListener(datetimelistener);
         textInputEditText1.setOnClickListener(datelistener);
+        editor.putString("dateoflog", dateoflogformat.format(date));
+        editor.putString("dayoflog", dateoflogformat.format(date));
+        editor.apply();
 ////////////////////////////////////////////////////////////////////
 ////////////////////    Next Activity    ///////////////////////////
         b1=findViewById(R.id.inventorybutton1);

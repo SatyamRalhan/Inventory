@@ -33,23 +33,38 @@ public class Addquantity extends AppCompatActivity {
             response = preferences.getString("response", null);
 
             try {
+                String productsdone = preferences.getString("productsdone", null);
+                try {
+                    JSONObject object;
+                    if (productsdone.matches("")) {
+                        object = new JSONObject(productsdone);
+                    } else {
+                        object = new JSONObject();
+                    }
+                    object.put(bundle.getString("name"), "yes");
+                    editor.putString("productsdone", object.toString());
+                    editor.apply();
+                    Log.d("productedadded", name.getText().toString());
+                } catch (JSONException e) {
+                }
                 JSONObject object = new JSONObject();
                 object.put("name", bundle.getString("name"));
                 object.put("skucode", bundle.getString("skucode"));
                 object.put("quantity", quantity.getText().toString() + unit.getText().toString());
-                object.put("currentstock", bundle.getString("currentstock"));
-                object.put("_id", bundle.getString("_id"));
-                if (response.toLowerCase().equals("closing")) {
-                    object.put("adjustingstock", Integer.parseInt(quantity.getText().toString()) - Integer.parseInt(bundle.getString("currentstock")));
-                } else {
-                    object.put("adjustingstock", Integer.parseInt(quantity.getText().toString()));
-                }
+                object.put("currentStock", bundle.getString("currentstock"));
+                object.put("outletProduct", bundle.getString("_id"));
+
                 String cart = preferences.getString("Cartitems", null);
                 Log.d("checkingquantity", quantity.getText().toString());
                 JSONArray array;
                 if (quantity.getText().toString().matches("")) {
                     error.setVisibility(View.VISIBLE);
                 } else {
+                    if (response.toLowerCase().equals("closing")) {
+                        object.put("stockAdjusted", Integer.toString(Integer.parseInt(quantity.getText().toString()) - Integer.parseInt(bundle.getString("currentstock"))));
+                    } else {
+                        object.put("stockAdjusted", quantity.getText().toString());
+                    }
                     if (!(cart == null)) {
                         array = new JSONArray(cart);
 

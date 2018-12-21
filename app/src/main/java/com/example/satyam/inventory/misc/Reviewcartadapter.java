@@ -42,6 +42,7 @@ public class Reviewcartadapter extends RecyclerView.Adapter<Reviewcartadapter.My
             final Context context = holder.name.getContext();
             preferences = context.getSharedPreferences(BuildConfig.APPLICATION_ID, Context.MODE_PRIVATE);
             editor = preferences.edit();
+            final Cartreview cartreview = new Cartreview();
             final JSONArray cart = new JSONArray(preferences.getString("Cartitems", null));
             final JSONObject jsonObject = mDataset.getJSONObject(position);
             holder.name.setText(jsonObject.getString("name"));
@@ -59,7 +60,10 @@ public class Reviewcartadapter extends RecyclerView.Adapter<Reviewcartadapter.My
                         }
                         editor.putString("Cartitems", cart.toString());
                         editor.apply();
+                        Log.d("cartvalue", cart.toString());
+                        cartreview.finish();
                         Intent intent = new Intent(context, Cartreview.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                         context.startActivity(intent);
                     } catch (JSONException er) {
                     }

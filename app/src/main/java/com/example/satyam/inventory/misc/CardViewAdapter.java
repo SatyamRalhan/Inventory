@@ -20,6 +20,8 @@ import org.json.JSONObject;
 
 public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.MyViewHolder> {
     private JSONArray mDataset;
+    SharedPreferences preferences;
+    SharedPreferences.Editor editor;
 
     public CardViewAdapter(JSONArray myValues) {
         mDataset = myValues;
@@ -75,8 +77,7 @@ public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.MyView
     }
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
-        SharedPreferences preferences;
-        SharedPreferences.Editor editor;
+
         private TextView name;
         private ImageView imageView;
         private TextView skucode;

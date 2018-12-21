@@ -35,6 +35,7 @@ public class Searchable extends AppCompatActivity {
     RecyclerView.LayoutManager layoutManager;
     AppCompatImageButton back;
     SearchView searchView;
+    String productsdone;
     RelativeLayout relativeLayout;
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
@@ -94,6 +95,7 @@ public class Searchable extends AppCompatActivity {
         ///////fuctionality to back button
         back = findViewById(R.id.back_button);
         back.setOnClickListener(backlistener);
+        productsdone = preferences.getString("productsdone", null);
         //////////////////
         /////////////////
 
@@ -101,13 +103,7 @@ public class Searchable extends AppCompatActivity {
             outletproduct = new JSONArray(preferences.getString("outletproducts", null));
             inforforadapter = new JSONArray();
             for (int i = 0; i < outletproduct.length(); i++) {
-                JSONObject object = new JSONObject();
-                object.put("name", outletproduct.getJSONObject(i).getJSONObject("product").getString("productTitle"));
-                object.put("baseunit", outletproduct.getJSONObject(i).getJSONObject("product").getString("baseUnit"));
-                object.put("skucode", outletproduct.getJSONObject(i).getJSONObject("product").getString("skuProductCode"));
-                object.put("currentstock", Integer.toString(outletproduct.getJSONObject(i).getInt("currentStock")));
-                object.put("_id", outletproduct.getJSONObject(i).getString("_id"));
-                inforforadapter.put(object);
+                inforforadapter.put(putit(i));
             }
             Log.d("IFGETTININFO", inforforadapter.toString());
         } catch (JSONException e) {
@@ -155,13 +151,7 @@ public class Searchable extends AppCompatActivity {
         try {
             for (int j = 0; j < i; j++) {
                 if (outletproduct.getJSONObject(j).getJSONObject("product").getString("productTitle").toLowerCase().contains(query.toLowerCase())) {
-                    JSONObject object = new JSONObject();
-                    object.put("name", outletproduct.getJSONObject(j).getJSONObject("product").getString("productTitle"));
-                    object.put("baseunit", outletproduct.getJSONObject(j).getJSONObject("product").getString("baseUnit"));
-                    object.put("skucode", outletproduct.getJSONObject(j).getJSONObject("product").getString("skuProductCode"));
-                    object.put("currentstock", Integer.toString(outletproduct.getJSONObject(j).getInt("currentStock")));
-                    object.put("_id", outletproduct.getJSONObject(i).getString("_id"));
-                    inforforadapter.put(object);
+                    inforforadapter.put(putit(j));
                 }
             }
         } catch (JSONException e) {
@@ -177,5 +167,18 @@ public class Searchable extends AppCompatActivity {
     public void onBackPressed() {
         Intent intent = new Intent(Searchable.this, Inventoryhome.class);
         startActivity(intent);
+    }
+
+    private JSONObject putit(int j) {
+        JSONObject object = new JSONObject();
+        try {
+            object.put("name", outletproduct.getJSONObject(j).getJSONObject("product").getString("productTitle"));
+            object.put("baseunit", outletproduct.getJSONObject(j).getJSONObject("product").getString("baseUnit"));
+            object.put("skucode", outletproduct.getJSONObject(j).getJSONObject("product").getString("skuProductCode"));
+            object.put("currentstock", Integer.toString(outletproduct.getJSONObject(j).getInt("currentStock")));
+            object.put("_id", outletproduct.getJSONObject(j).getString("_id"));
+        } catch (JSONException e) {
+        }
+        return object;
     }
 }

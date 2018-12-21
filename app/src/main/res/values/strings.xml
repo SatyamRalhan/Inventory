@@ -6,4 +6,5 @@
     <string name="user_info">http://link.adurcup.com:3000/api/users/me</string>
     <string name="outlets">http://link.adurcup.com:3000/api/outlets</string>
     <string name="outletproducts">http://link.adurcup.com:3000/api/outletproducts/outlet/</string>
+    <string name="inventorypost">http://link.adurcup.com:3000/api/inventorylogs</string>
 </resources>

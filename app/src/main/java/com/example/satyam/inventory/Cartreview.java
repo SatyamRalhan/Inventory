@@ -13,18 +13,27 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.satyam.inventory.misc.Reviewcartadapter;
+import com.example.satyam.inventory.misc.VolleyController;
 
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
 public class Cartreview extends AppCompatActivity {
+    VolleyController volleyController;
     TextView titletext;
     RecyclerView recyclerView;
     LinearLayoutCompat layout;
@@ -34,6 +43,7 @@ public class Cartreview extends AppCompatActivity {
     JSONArray array;
     AppCompatImageButton button;
     SearchView searchView;
+    Button button1;
     View.OnClickListener backlistener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
@@ -54,6 +64,40 @@ public class Cartreview extends AppCompatActivity {
         }
     };
 
+    View.OnClickListener finishlistener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            JSONObject inventorylog = new JSONObject();
+            try {
+                inventorylog.put("referenceNo", preferences.getString("refno", null));
+                inventorylog.put("outlet", preferences.getString("outlet_id", null));
+                inventorylog.put("business", preferences.getString("b_id", null));
+                inventorylog.put("reason", preferences.getString("response", null));
+                inventorylog.put("lineItems", new JSONArray(preferences.getString("Cartitems", "null")));
+                inventorylog.put("dateOfLog", preferences.getString("dateoflog", null));
+                inventorylog.put("dayOfLog", preferences.getString("dayoflog", null));
+            } catch (JSONException e) {
+            }
+            Log.d("postobjectcheck", inventorylog.toString());
+            JsonObjectRequest request = new JsonObjectRequest
+                    (Request.Method.POST, getString(R.string.inventorypost), inventorylog, new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            Log.d("Inventorycheck", "Inventory log checked");
+                            Intent intent = new Intent(Cartreview.this, Home.class);
+                            startActivity(intent);
+                        }
+                    },
+                            new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                }
+                            }
+                    );
+            volleyController.addToRequestQueue(request);
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,18 +106,22 @@ public class Cartreview extends AppCompatActivity {
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayShowTitleEnabled(false);
+        volleyController = VolleyController.getInstance(this);
         titletext = findViewById(R.id.searchbartext);
         titletext.setText("Cart Items");
         layout = findViewById(R.id.cartlayout);
         preferences = getSharedPreferences(BuildConfig.APPLICATION_ID, MODE_PRIVATE);
+        button1 = findViewById(R.id.finishinventory);
+        button1.setOnClickListener(finishlistener);
         button = findViewById(R.id.back_button);
         button.setOnClickListener(backlistener);
+        recyclerView = new RecyclerView(this);
+        manager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(manager);
+        recyclerView.setId(R.id.recyclerviewid);
         try {
             if (!(preferences.getString("Cartitems", null) == null)) {
                 array = new JSONArray(preferences.getString("Cartitems", null));
-                recyclerView = new RecyclerView(this);
-                manager = new LinearLayoutManager(this);
-                recyclerView.setLayoutManager(manager);
                 adapter = new Reviewcartadapter(array);
                 recyclerView.setAdapter(adapter);
                 layout.addView(recyclerView);
@@ -132,13 +180,23 @@ public class Cartreview extends AppCompatActivity {
                         array.put(parent.getJSONObject(i));
                     }
                 }
-                adapter = new Reviewcartadapter(array);
-                recyclerView.setAdapter(adapter);
+                resetRecycler(array);
+
             } else {
                 Toast.makeText(this, "Cart is Empty", Toast.LENGTH_SHORT).show();
             }
 
         } catch (JSONException e) {
         }
+    }
+
+    private void resetRecycler(JSONArray array) {
+        adapter = new Reviewcartadapter(array);
+        recyclerView.setAdapter(adapter);
+    }
+
+    public void init() {
+        finish();
+        startActivity(getIntent());
     }
 }
