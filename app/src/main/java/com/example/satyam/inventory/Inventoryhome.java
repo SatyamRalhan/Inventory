@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TextInputEditText;
@@ -41,6 +42,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 public class Inventoryhome extends AppCompatActivity {
+    AppBarLayout appbar;
     Calendar c=Calendar.getInstance();
     Date date=c.getTime();
     SimpleDateFormat dateFormat= new SimpleDateFormat("dd-MM-yyyy hh:mm a");
@@ -276,7 +278,7 @@ public class Inventoryhome extends AppCompatActivity {
                 @Override
                 public void onErrorResponse(VolleyError error1)
                 {
-                    Log.e("response error",error1.getMessage());
+//                    Log.e("response error",error1.getMessage());
                 }
         });
         volleyController=VolleyController.getInstance(Inventoryhome.this);
