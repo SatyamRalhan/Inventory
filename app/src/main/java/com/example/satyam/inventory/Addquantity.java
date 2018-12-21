@@ -18,6 +18,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Addquantity extends AppCompatActivity {
+    String response;
     MaterialCardView cardView;
     TextView name, currentstock, unit, error;
     EditText quantity;
@@ -29,12 +30,20 @@ public class Addquantity extends AppCompatActivity {
     View.OnClickListener additemlistener = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
+            response = preferences.getString("response", null);
+
             try {
                 JSONObject object = new JSONObject();
                 object.put("name", bundle.getString("name"));
                 object.put("skucode", bundle.getString("skucode"));
                 object.put("quantity", quantity.getText().toString() + unit.getText().toString());
+                object.put("currentstock", bundle.getString("currentstock"));
                 object.put("_id", bundle.getString("_id"));
+                if (response.toLowerCase().equals("closing")) {
+                    object.put("adjustingstock", Integer.parseInt(quantity.getText().toString()) - Integer.parseInt(bundle.getString("currentstock")));
+                } else {
+                    object.put("adjustingstock", Integer.parseInt(quantity.getText().toString()));
+                }
                 String cart = preferences.getString("Cartitems", null);
                 Log.d("checkingquantity", quantity.getText().toString());
                 JSONArray array;
