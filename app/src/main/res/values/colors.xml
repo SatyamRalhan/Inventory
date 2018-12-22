@@ -6,4 +6,6 @@
     <color name="white">#ffffff</color>
     <color name="red">#ce0a0b</color>
     <color name="green">#0aa60a</color>
+    <color name="primary_text">#0b0b0b</color>
+    <color name="list_grey_bg">#3b3a3a</color>
 </resources>

@@ -36,7 +36,7 @@ public class Addquantity extends AppCompatActivity {
                 String productsdone = preferences.getString("productsdone", null);
                 try {
                     JSONObject object;
-                    if (productsdone.matches("")) {
+                    if (productsdone.contains("{")) {
                         object = new JSONObject(productsdone);
                     } else {
                         object = new JSONObject();
@@ -44,7 +44,7 @@ public class Addquantity extends AppCompatActivity {
                     object.put(bundle.getString("name"), "yes");
                     editor.putString("productsdone", object.toString());
                     editor.apply();
-                    Log.d("productedadded", name.getText().toString());
+                    Log.d("productedadded", preferences.getString("productsdone", null));
                 } catch (JSONException e) {
                 }
                 JSONObject object = new JSONObject();

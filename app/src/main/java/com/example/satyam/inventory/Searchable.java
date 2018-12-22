@@ -98,12 +98,14 @@ public class Searchable extends AppCompatActivity {
         productsdone = preferences.getString("productsdone", null);
         //////////////////
         /////////////////
-
         try {
+
             outletproduct = new JSONArray(preferences.getString("outletproducts", null));
             inforforadapter = new JSONArray();
             for (int i = 0; i < outletproduct.length(); i++) {
+
                 inforforadapter.put(putit(i));
+
             }
             Log.d("IFGETTININFO", inforforadapter.toString());
         } catch (JSONException e) {
