@@ -33,7 +33,7 @@ public class Addquantity extends AppCompatActivity {
             response = preferences.getString("response", null);
 
             try {
-                String productsdone = preferences.getString("productsdone", null);
+                String productsdone = preferences.getString("productsdone", "null");
                 try {
                     JSONObject object;
                     if (productsdone.contains("{")) {

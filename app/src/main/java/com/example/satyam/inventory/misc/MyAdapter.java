@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.example.satyam.inventory.Addquantity;
 import com.example.satyam.inventory.BuildConfig;
 import com.example.satyam.inventory.Home;
+import com.example.satyam.inventory.R;
 import com.example.satyam.inventory.Searchable;
 
 import java.util.List;
@@ -34,16 +35,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     public MyViewHolder onCreateViewHolder(ViewGroup parent,
                                                      int viewType) {
         // create a new view
-
-        MyViewHolder vh;
-
-            TextView v = (TextView) LayoutInflater.from(parent.getContext())
-                .inflate(android.R.layout.simple_list_item_1 , parent, false);
-            vh = new MyViewHolder(v);
-
-
-
-        return vh;
+        View listview=LayoutInflater.from(parent.getContext())  .inflate(R.layout.outlet_show,parent,false);
+        return (new MyViewHolder(listview));
     }
 
     // Replace the contents of a view (invoked by the layout manager)
@@ -66,7 +59,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         super.onBindViewHolder(holder, position, payloads);
     }
 
-    public void onClick(View view){}
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -74,37 +66,36 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         SharedPreferences preferences;
         SharedPreferences.Editor editor;
-        // each data item is just a string in this case
-        public TextView mTextView;
-        public MyViewHolder(TextView v) {
+        private TextView mTextView;
+        public MyViewHolder(View v) {
             super(v);
-            mTextView = v;
+            mTextView = v.findViewById(R.id.new_text);
             v.setOnClickListener(this);
         }
 
         @Override
         public void onClick(View view) {
-            if(view instanceof TextView){
-                preferences = view.getContext().getSharedPreferences(BuildConfig.APPLICATION_ID, view.getContext().MODE_PRIVATE);
-                editor = preferences.edit();
-                if(view.getContext() instanceof Searchable){
-                Intent intent=new Intent(view.getContext(),Addquantity.class);
-                intent.putExtra("itemname",((TextView) view).getText());
-                view.getContext().startActivity(intent);}
-                else{
-                    Intent intent=new Intent(view.getContext(),Home.class);
-                    editor.putString("Currentoutlet", ((TextView) view).getText().toString());
-                    editor.apply();
-                    view.getContext().startActivity(intent);
-                }
+
+            preferences = view.getContext().getSharedPreferences(BuildConfig.APPLICATION_ID, view.getContext().MODE_PRIVATE);
+            editor = preferences.edit();
+            if(view.getContext() instanceof Searchable){
+            Intent intent=new Intent(view.getContext(),Addquantity.class);
+            intent.putExtra("itemname",((TextView) view.findViewById(R.id.new_text)).getText());
+            view.getContext().startActivity(intent);}
+            else{
+                Intent intent=new Intent(view.getContext(),Home.class);
+                editor.putString("Currentoutlet", ((TextView) view.findViewById(R.id.new_text)).getText().toString());
+                editor.apply();
+                view.getContext().startActivity(intent);
+            }
 //                LayoutInflater mInflater = (LayoutInflater) view.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 //                LinearLayoutCompat linearLayoutCompat=(LinearLayoutCompat) View.inflate(view.getContext(),R.layout.activity_searchable,null);
 //                RelativeLayout relativeLayout=linearLayoutCompat.findViewById(R.id.addquantityscreen);
 //                relativeLayout.setVisibility(View.VISIBLE);
 //                TextView textView=linearLayoutCompat.findViewById(R.id.setproductname);
 //                textView.setText("Yo");
-                Log.d("onclickchecking",((TextView) view).getText().toString());
-            }
+            Log.d("onclickchecking",((TextView) view.findViewById(R.id.new_text)).getText().toString());
+
         }
     }
 

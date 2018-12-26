@@ -1,10 +1,13 @@
 package com.example.satyam.inventory;
 
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
@@ -51,6 +54,28 @@ public class Inventoryhome extends AppCompatActivity {
     SimpleDateFormat dateview=new SimpleDateFormat("dd-MM-yyyy");
     TextInputLayout textInputLayout;
     Button b1;
+    Button b,b2;
+    View.OnClickListener listener=new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            switch (view.getId()){
+                case(R.id.button2):
+                    b.setSelected(true);
+                    b.setTextColor(getColor(R.color.white));
+                    b2.setSelected(false);
+                    b2.setTextColor(getColor(R.color.primary_text));
+                    break;
+                case(R.id.button3):
+                    b2.setSelected(true);
+                    b2.setTextColor(getColor(R.color.white));
+                    b.setSelected(false);
+                    b.setTextColor(getColor(R.color.primary_text));
+                    break;
+            }
+
+
+        }
+    };
     TextInputEditText refno;
     EditText textInputEditText1,textInputEditText;
     String store;
@@ -63,33 +88,28 @@ public class Inventoryhome extends AppCompatActivity {
     BottomNavigationView bottomNavigationView;
     Intent intent;
     String strorereverse;
-    RadioGroup radiogroup;
-    RadioButton radioButton;
     BottomNavigationView.OnNavigationItemSelectedListener bottomnavlistener = new BottomNavigationView.OnNavigationItemSelectedListener() {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
             switch (menuItem.getItemId()) {
                 case (R.id.home):
-                    AlertDialog.Builder builder = new AlertDialog.Builder(Inventoryhome.this);
-                    final AlertDialog dialog;
-                    builder.setTitle("Exit");
-                    builder.setMessage("The items in cart will be deleted");
-                    builder.setPositiveButton("Proceed", new DialogInterface.OnClickListener() {
+                    final Dialog dialog=new Dialog(Inventoryhome.this);
+                    dialog.setContentView(R.layout.alert_layout);
+                    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    dialog.findViewById(R.id.continue_button).setOnClickListener(new View.OnClickListener() {
                         @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
+                        public void onClick(View view) {
                             intent = new Intent(Inventoryhome.this, Home.class);
                             startActivity(intent);
                         }
                     });
-                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    dialog.findViewById(R.id.close_button).setOnClickListener(new View.OnClickListener() {
                         @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-//                            dialog.dismiss();
+                        public void onClick(View view) {
+                            dialog.cancel();
                         }
                     });
-                    dialog = builder.create();
                     dialog.show();
-
                     break;
             }
             return false;
@@ -100,8 +120,14 @@ public class Inventoryhome extends AppCompatActivity {
         @Override
         public void onClick(View view) {
 
-            radioButton = findViewById(radiogroup.getCheckedRadioButtonId());
-            editor.putString("response", radioButton.getText().toString());
+//            radioButton = findViewById(radiogroup.getCheckedRadioButtonId());
+//            editor.putString("response", radioButton.getText().toString());
+            if(b.isSelected()){
+                editor.putString("response","New Order");
+            }
+            else{
+                editor.putString("response","Closing");
+            }
             if (refno.getText().toString().matches("")) {
                 editor.putString("refno", refno.getText().toString());
             }
@@ -214,12 +240,20 @@ public class Inventoryhome extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inventoryhome);
+        b=findViewById(R.id.button2);
+        b.setSelected(false);
+        b.setBackgroundResource(R.drawable.button_left);
+        b2=findViewById(R.id.button3);
+        b2.setBackgroundResource(R.drawable.button_right);
+        b2.setSelected(true);
+        b2.setTextColor(getColor(R.color.white));
+        b.setOnClickListener(listener);
+        b2.setOnClickListener(listener);
         refno = findViewById(R.id.inventoryedit3);
         preferences = this.getSharedPreferences(BuildConfig.APPLICATION_ID, MODE_PRIVATE);
         editor=preferences.edit();
         bottomNavigationView = findViewById(R.id.bottom1);
         bottomNavigationView.setOnNavigationItemSelectedListener(bottomnavlistener);
-        radiogroup = findViewById(R.id.radiogroup);
         String outlets=preferences.getString("outlets",null);
         String currentoutlet = preferences.getString("Currentoutlet", null);
         outlet_name = findViewById(R.id.outlet_name);

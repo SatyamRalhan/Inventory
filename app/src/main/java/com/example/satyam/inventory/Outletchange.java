@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatImageButton;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -29,6 +30,7 @@ public class Outletchange extends AppCompatActivity {
     RecyclerView recyclerView;
     RecyclerView.LayoutManager manager;
     RecyclerView.Adapter adapter;
+    DividerItemDecoration divider;
     SharedPreferences preferences;
     LinearLayoutCompat layout;
     TextView toolbartext;
@@ -81,9 +83,12 @@ public class Outletchange extends AppCompatActivity {
         layout=findViewById(R.id.outlet_layout);
         recyclerView=new RecyclerView(Outletchange.this);
         manager=new LinearLayoutManager(Outletchange.this);
+        divider=new DividerItemDecoration(this,DividerItemDecoration.VERTICAL);
+        ((LinearLayoutManager) manager).setOrientation(LinearLayoutManager.VERTICAL);
         adapter =new MyAdapter(list.toArray(new String[0]));
         recyclerView.setLayoutManager(manager);
         recyclerView.setAdapter(adapter);
+        recyclerView.addItemDecoration(divider);
         layout.addView(recyclerView);
 
     }

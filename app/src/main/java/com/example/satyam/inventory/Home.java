@@ -87,7 +87,7 @@ public class Home extends AppCompatActivity {
         ///////////////////////////////  SETTING UP FOR LOGIN///////////////
         final JSONObject jsonObject=new JSONObject();
         try {
-            jsonObject.put("username","satyamandroid");
+            jsonObject.put("username","+91-9999777777");
             jsonObject.put("password","applemango");
         }
         catch (JSONException e){

@@ -39,7 +39,7 @@
             android:name=".Addquantity"
             android:windowSoftInputMode="adjustResize" />
         <activity android:name=".Outletchange" />
-        <activity android:name=".Cartreview"></activity>
+        <activity android:name=".Cartreview" />
     </application>
 
 </manifest>

@@ -30,7 +30,7 @@
             android:hint="@string/inventorytime"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/relativeLayout">
+            app:layout_constraintTop_toBottomOf="@+id/button2">
 
             <EditText
                 android:id="@+id/te1"
@@ -38,7 +38,7 @@
                 android:layout_height="match_parent"
                 android:clickable="true"
                 android:drawableEnd="@drawable/dateselector_black"
-                android:focusableInTouchMode="false"/>
+                android:focusableInTouchMode="false" />
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
@@ -81,48 +81,6 @@
         </android.support.design.widget.TextInputLayout>
 
 
-        <RelativeLayout
-            android:id="@+id/relativeLayout"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="50dp"
-            android:layout_marginEnd="20dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/include">
-
-            <TextView
-                android:id="@+id/inventorytext4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_marginTop="0dp"
-                android:text="Reason" />
-
-            <RadioGroup
-                android:id="@+id/radiogroup"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/inventorytext4"
-                android:checkedButton="@+id/second"
-                android:orientation="horizontal">
-
-                <RadioButton
-                    android:id="@+id/first"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="New Order" />
-
-                <RadioButton
-                    android:id="@+id/second"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Closing"/>
-            </RadioGroup>
-
-        </RelativeLayout>
-
         <Button
             android:id="@+id/inventorybutton1"
             android:layout_width="wrap_content"
@@ -148,6 +106,26 @@
             app:layout_constraintStart_toStartOf="parent"
             app:menu="@menu/bottom_menu" />
 
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/button2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="96dp"
+            android:layout_marginTop="50dp"
+            android:text="New Order"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/include" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/button3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Closing"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@+id/button2"
+            app:layout_constraintStart_toEndOf="@+id/button2" />
+
     </android.support.constraint.ConstraintLayout>
 
     <android.support.design.widget.NavigationView
@@ -157,4 +135,5 @@
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
         app:menu="@menu/sidenav" />
+
 </android.support.v4.widget.DrawerLayout>
