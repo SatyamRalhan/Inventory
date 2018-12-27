@@ -66,6 +66,7 @@ public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.MyView
                     intent.putExtra("baseunit", baseunit.getText());
                     intent.putExtra("url",url);
                     try {
+                        intent.putExtra("units",jsonObject.getString("units"));
                         intent.putExtra("_id", jsonObject.getString("_id"));
                     } catch (JSONException e) {
                     }

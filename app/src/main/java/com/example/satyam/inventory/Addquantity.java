@@ -8,9 +8,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatImageButton;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,11 +22,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 public class Addquantity extends AppCompatActivity {
+    Spinner spinner;
     ImageView image;
+    ArrayList<String> array;
     String response,images75;
-    MaterialCardView cardView;
-    TextView name, currentstock, unit, error;
+    TextView name, currentstock, error;
     EditText quantity;
     AppCompatImageButton button;
     Button additem;
@@ -41,7 +46,7 @@ public class Addquantity extends AppCompatActivity {
                 JSONObject object = new JSONObject();
                 object.put("name", bundle.getString("name"));
                 object.put("skucode", bundle.getString("skucode"));
-                object.put("quantity", quantity.getText().toString() + unit.getText().toString());
+                object.put("quantity", quantity.getText().toString() + spinner.getSelectedItem().toString());
                 object.put("currentStock", bundle.getString("currentstock"));
                 object.put("outletProduct", bundle.getString("_id"));
                 object.put("url",bundle.getString("url"));
@@ -95,10 +100,21 @@ public class Addquantity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.quantity_layout);
-        images75=getString(R.string.images75);
+        images75=getString(R.string.images300);
         bundle = getIntent().getExtras();
         button = findViewById(R.id.back_buttonaddquantity);
         button.setOnClickListener(backlistener);
+        try {
+            JSONArray units = new JSONArray(bundle.getString("units"));
+            array=new ArrayList<>();
+            for (int i=0;i<units.length();i++){
+                array.add(units.getJSONObject(i).getString("unit"));
+            }
+        }catch (JSONException e){}
+        spinner=findViewById(R.id.spinner);
+        ArrayAdapter<String> adapter=new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,array);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
         String prodname = bundle.getString("name");
         String prodstock = bundle.getString("currentstock") + " " + bundle.getString("baseunit");
         preferences = getSharedPreferences(BuildConfig.APPLICATION_ID, MODE_PRIVATE);
@@ -106,17 +122,15 @@ public class Addquantity extends AppCompatActivity {
         quantity = findViewById(R.id.quantityedit);
         error = findViewById(R.id.errormessage);
         error.setVisibility(View.INVISIBLE);
-        unit = findViewById(R.id.unit);
-        cardView = findViewById(R.id.itemcard);
-        name = cardView.findViewById(R.id.setproductname);
+        name = findViewById(R.id.setproductname);
         image=findViewById(R.id.setproductimage);
         final String url=bundle.getString("url");
         Picasso.get()
                 .load(images75+url)
-                .resize(40, 40)
+                .resize(150, 150)
                 .centerCrop()
                 .into(image);
-        currentstock = cardView.findViewById(R.id.currentstock);
+        currentstock = findViewById(R.id.currentstock);
         additem = findViewById(R.id.additembutton);
         additem.setOnClickListener(additemlistener);
         name.setText(prodname);

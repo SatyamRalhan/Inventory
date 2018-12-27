@@ -40,78 +40,47 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <android.support.design.card.MaterialCardView
-        android:id="@+id/itemcard"
-        android:layout_width="300dp"
-        android:layout_height="100dp"
+    <android.support.v7.widget.AppCompatImageView
+        android:id="@+id/setproductimage"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:layout_below="@+id/add_quantitybar"
         android:layout_alignParentStart="true"
-        android:layout_marginStart="34dp"
-        android:layout_marginLeft="40dp"
-        android:layout_marginTop="51dp">
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="117dp"
+        android:layout_marginEnd="117dp" />
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignStart="@+id/itemcard">
+    <TextView
+        android:id="@+id/setproductname"
+        android:layout_width="280dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/setproductimage"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:textColor="@color/primary_text"
+        android:textSize="22sp" />
 
-            <android.support.v7.widget.AppCompatImageView
-                android:id="@+id/setproductimage"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:layout_alignParentStart="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp" />
+    <TextView
+        android:id="@+id/currentstock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/setproductname"
+        android:layout_marginStart="20dp"
+        android:layout_marginBottom="0dp"
+        android:layout_toEndOf="@+id/setproductname" />
 
-            <TextView
-                android:id="@+id/setproductname"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="20dp"
-                android:layout_marginBottom="10dp"
-                android:layout_toRightOf="@id/setproductimage"
-                android:textSize="22sp" />
-
-            <TextView
-                android:id="@+id/currentstock"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/setproductname"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="10dp"
-                android:layout_toEndOf="@+id/setproductimage" />
-        </RelativeLayout>
-
-    </android.support.design.card.MaterialCardView>
 
     <EditText
         android:id="@+id/quantityedit"
-        android:layout_width="100dp"
-        android:layout_height="50dp"
-        android:layout_below="@id/itemcard"
+        android:layout_width="99dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/setproductname"
         android:layout_alignParentStart="true"
-        android:layout_marginStart="83dp"
-        android:layout_marginTop="83dp"
+        android:layout_marginStart="72dp"
+        android:layout_marginTop="66dp"
         android:gravity="center"
         android:inputType="number" />
-
-    <TextView
-        android:id="@+id/unit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/itemcard"
-        android:layout_alignBottom="@+id/quantityedit"
-        android:layout_marginStart="18dp"
-        android:layout_marginTop="105dp"
-        android:layout_marginBottom="0dp"
-        android:layout_toEndOf="@id/quantityedit"
-        android:text="unit"
-        android:textSize="21sp" />
 
     <Button
         android:id="@+id/additembutton"
@@ -128,9 +97,18 @@
         android:layout_height="16dp"
         android:layout_below="@+id/quantityedit"
         android:layout_alignStart="@+id/quantityedit"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="9dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="18dp"
         android:text="*please enter quantity"
         android:textColor="@color/red" />
+
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/quantityedit"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="5dp"
+        android:layout_toEndOf="@+id/quantityedit" />
 
 </RelativeLayout>

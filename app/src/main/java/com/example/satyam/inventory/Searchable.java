@@ -150,6 +150,7 @@ public class Searchable extends AppCompatActivity {
         SearchManager searchManager=(SearchManager) getSystemService(Context.SEARCH_SERVICE);
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
         searchView.setOnQueryTextListener(textlistener);
+        searchView.setQueryHint("Search Products");
         return true;
     }
 
@@ -175,7 +176,9 @@ public class Searchable extends AppCompatActivity {
         try {
             if(productsdone.equals("null")) {
                 for (int i = 0; i < outletproduct.length(); i++) {
-                    inforforadapter.put(putit(i));
+                    if (outletproduct.getJSONObject(i).getJSONObject("product").getString("productTitle").toLowerCase().contains(query.toLowerCase())) {
+                        inforforadapter.put(putit(i));
+                    }
                 }
             }
             else{
@@ -218,6 +221,7 @@ public class Searchable extends AppCompatActivity {
             object.put("_id", outletproduct.getJSONObject(j).getString("_id"));
             object.put("url",outletproduct.getJSONObject(j).getJSONObject("product").getJSONArray("imagesURLs").getString(0));
             Log.d("url",outletproduct.getJSONObject(j).getJSONObject("product").getJSONArray("imagesURLs").getString(0));
+            object.put("units",outletproduct.getJSONObject(j).getJSONObject("product").getJSONArray("stockUnits").toString());
         } catch (JSONException e) {
         }
         return object;

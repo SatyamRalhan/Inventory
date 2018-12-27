@@ -15,4 +15,19 @@
         <item name="android:src">@drawable/close_white</item>
         <item name="android:background">@color/red</item>
     </style>
+    <style name="Theme.MyTheme" parent="Theme.AppCompat">
+        <item name="searchViewStyle">@style/MySearchViewStyle</item>
+    </style>
+    <style name="MySearchViewStyle" parent="Widget.AppCompat.SearchView">
+    <!-- Background for the search query section (e.g. EditText) -->
+        <item name="queryBackground">@color/colorPrimary</item>
+    <!-- Background for the actions section (e.g. voice, submit) -->
+        <item name="submitBackground">@color/colorPrimary</item>
+    <!-- Close button icon -->
+
+    <!-- Search button icon -->
+
+    <!-- Go/commit button icon -->
+        <item name="goIcon">@color/white</item>
+    </style>
 </resources>
