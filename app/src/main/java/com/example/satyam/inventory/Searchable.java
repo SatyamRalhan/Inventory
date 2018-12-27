@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatImageButton;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -115,9 +116,11 @@ public class Searchable extends AppCompatActivity {
         linearLayoutCompat = findViewById(R.id.linearlayout);
         linearLayoutCompat.addView(listView);
         layoutManager = new LinearLayoutManager(this);
+        DividerItemDecoration divider=new DividerItemDecoration(Searchable.this,DividerItemDecoration.VERTICAL);
+        ((LinearLayoutManager) layoutManager).setOrientation(LinearLayoutManager.VERTICAL);
         listView.setLayoutManager(layoutManager);
         listView.setHasFixedSize(true);
-
+        listView.addItemDecoration(divider);
         adapter = new CardViewAdapter(inforforadapter);
         listView.setAdapter(adapter);
 

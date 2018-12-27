@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.satyam.inventory.Addquantity;
@@ -29,7 +30,7 @@ public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.MyView
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View listItem = LayoutInflater.from(parent.getContext()).inflate(R.layout.cardviewgroup, parent, false);
+        View listItem = LayoutInflater.from(parent.getContext()).inflate(R.layout.searchviewgroup, parent, false);
         return new MyViewHolder(listItem);
     }
 
@@ -83,7 +84,7 @@ public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.MyView
         private TextView skucode;
         private TextView current;
         private TextView base;
-        private CardView cardView;
+        private RelativeLayout cardView;
 
         public MyViewHolder(View itemView) {
             super(itemView);

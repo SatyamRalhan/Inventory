@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatImageButton;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -117,7 +118,10 @@ public class Cartreview extends AppCompatActivity {
         button.setOnClickListener(backlistener);
         recyclerView = new RecyclerView(this);
         manager = new LinearLayoutManager(this);
+        DividerItemDecoration divider=new DividerItemDecoration(Cartreview.this,DividerItemDecoration.VERTICAL);
+        ((LinearLayoutManager) manager).setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(manager);
+        recyclerView.addItemDecoration(divider);
         recyclerView.setId(R.id.recyclerviewid);
         try {
             if (!(preferences.getString("Cartitems", null) == null)) {
