@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.example.satyam.inventory.Addquantity;
 import com.example.satyam.inventory.R;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -37,11 +38,18 @@ public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.MyView
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         try {
+            String images75=holder.cardView.getContext().getString(R.string.images75);
             final JSONObject jsonObject = mDataset.getJSONObject(position);
             holder.name.setText(jsonObject.getString("name"));
             holder.base.setText(jsonObject.getString("baseunit"));
             holder.current.setText(jsonObject.getString("currentstock"));
             holder.skucode.setText(jsonObject.getString("skucode"));
+            final String url=jsonObject.getString("url");
+            Picasso.get()
+                    .load(images75+url)
+                    .resize(40, 40)
+                    .centerCrop()
+                    .into(holder.imageView);
             holder.cardView.setOnClickListener(new View.OnClickListener() {
 
                 @Override
@@ -56,6 +64,7 @@ public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.MyView
                     intent.putExtra("skucode", sku.getText());
                     intent.putExtra("currentstock", currentstock.getText());
                     intent.putExtra("baseunit", baseunit.getText());
+                    intent.putExtra("url",url);
                     try {
                         intent.putExtra("_id", jsonObject.getString("_id"));
                     } catch (JSONException e) {

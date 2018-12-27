@@ -19,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -96,17 +97,30 @@ public class Searchable extends AppCompatActivity {
         ///////fuctionality to back button
         back = findViewById(R.id.back_button);
         back.setOnClickListener(backlistener);
-        productsdone = preferences.getString("productsdone", null);
+        productsdone = preferences.getString("productsdone", "null");
+        Log.d("productsdonesearch",productsdone);
         //////////////////
         /////////////////
         try {
 
             outletproduct = new JSONArray(preferences.getString("outletproducts", null));
             inforforadapter = new JSONArray();
-            for (int i = 0; i < outletproduct.length(); i++) {
-
-                inforforadapter.put(putit(i));
-
+            if(productsdone.equals("null")) {
+                for (int i = 0; i < outletproduct.length(); i++) {
+                    inforforadapter.put(putit(i));
+                }
+            }
+            else{
+                JSONObject object=new JSONObject(productsdone);
+                for (int i = 0; i < outletproduct.length(); i++) {
+                    String name=outletproduct.getJSONObject(i).getJSONObject("product").getString("productTitle");
+                    try {
+                        Log.d("yesorno",object.getString(name));
+                    }
+                    catch (JSONException e){
+                        inforforadapter.put(putit(i));
+                    }
+                }
             }
             Log.d("IFGETTININFO", inforforadapter.toString());
         } catch (JSONException e) {
@@ -123,7 +137,9 @@ public class Searchable extends AppCompatActivity {
         listView.addItemDecoration(divider);
         adapter = new CardViewAdapter(inforforadapter);
         listView.setAdapter(adapter);
-
+        if(preferences.getString("searchopened","no").equals("yes")){
+            searchView.setIconified(false);
+        }
     }
 
     @Override
@@ -151,14 +167,32 @@ public class Searchable extends AppCompatActivity {
     }
 
     private void doMySearch(String query){
+//        if(preferences.getString("searchopened","yes").equals("no")){
+//            editor.putString("searchopened","yes");
+//            editor.apply();
+//        }
         inforforadapter = new JSONArray();
-        int i = outletproduct.length();
         try {
-            for (int j = 0; j < i; j++) {
-                if (outletproduct.getJSONObject(j).getJSONObject("product").getString("productTitle").toLowerCase().contains(query.toLowerCase())) {
-                    inforforadapter.put(putit(j));
+            if(productsdone.equals("null")) {
+                for (int i = 0; i < outletproduct.length(); i++) {
+                    inforforadapter.put(putit(i));
                 }
             }
+            else{
+                JSONObject object=new JSONObject(productsdone);
+                for (int i = 0; i < outletproduct.length(); i++) {
+                    String name=outletproduct.getJSONObject(i).getJSONObject("product").getString("productTitle");
+                    try {
+                        Log.d("yesorno",object.getString(name));
+                    }
+                    catch (JSONException e){
+                        if (outletproduct.getJSONObject(i).getJSONObject("product").getString("productTitle").toLowerCase().contains(query.toLowerCase())) {
+                            inforforadapter.put(putit(i));
+                        }
+                    }
+                }
+            }
+
         } catch (JSONException e) {
         }
         Log.d("resultchecking", inforforadapter.toString());
@@ -182,6 +216,8 @@ public class Searchable extends AppCompatActivity {
             object.put("skucode", outletproduct.getJSONObject(j).getJSONObject("product").getString("skuProductCode"));
             object.put("currentstock", Integer.toString(outletproduct.getJSONObject(j).getInt("currentStock")));
             object.put("_id", outletproduct.getJSONObject(j).getString("_id"));
+            object.put("url",outletproduct.getJSONObject(j).getJSONObject("product").getJSONArray("imagesURLs").getString(0));
+            Log.d("url",outletproduct.getJSONObject(j).getJSONObject("product").getJSONArray("imagesURLs").getString(0));
         } catch (JSONException e) {
         }
         return object;

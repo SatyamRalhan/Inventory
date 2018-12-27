@@ -88,6 +88,9 @@ public class Home extends AppCompatActivity {
         bottomNavigationView=findViewById(R.id.bottom1);
         bottomNavigationView.setOnNavigationItemSelectedListener(bottomnavlistener);
         textView=findViewById(R.id.outlet_name);
+        editor.putString("productsdone","null");
+        editor.putString("searchopened","no");
+        editor.apply();
         ///////////////////////////////  SETTING UP FOR LOGIN///////////////
         final JSONObject jsonObject=new JSONObject();
         try {

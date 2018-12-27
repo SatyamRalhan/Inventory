@@ -7,6 +7,7 @@
     <string name="outlets">http://link.adurcup.com:3000/api/outlets</string>
     <string name="outletproducts">http://link.adurcup.com:3000/api/outletproducts/outlet/</string>
     <string name="inventorypost">http://link.adurcup.com:3000/api/inventorylogs</string>
+    <string name="images75">https://s3.ap-south-1.amazonaws.com/adurcup-new-images-products/75/</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.example.satyam.inventory.BuildConfig;
 import com.example.satyam.inventory.Cartreview;
 import com.example.satyam.inventory.R;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -42,12 +43,19 @@ public class Reviewcartadapter extends RecyclerView.Adapter<Reviewcartadapter.My
             final Context context = holder.name.getContext();
             preferences = context.getSharedPreferences(BuildConfig.APPLICATION_ID, Context.MODE_PRIVATE);
             editor = preferences.edit();
+            String images75=holder.name.getContext().getString(R.string.images75);
             final Cartreview cartreview = new Cartreview();
             final JSONArray cart = new JSONArray(preferences.getString("Cartitems", null));
             final JSONObject jsonObject = mDataset.getJSONObject(position);
             holder.name.setText(jsonObject.getString("name"));
             holder.quantity.setText(jsonObject.getString("quantity"));
             holder.skucode.setText(jsonObject.getString("skucode"));
+            final String url=jsonObject.getString("url");
+            Picasso.get()
+                    .load(images75+url)
+                    .resize(40, 40)
+                    .centerCrop()
+                    .into(holder.imageView);
             holder.button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -58,6 +66,10 @@ public class Reviewcartadapter extends RecyclerView.Adapter<Reviewcartadapter.My
                                 cart.remove(i);
                             }
                         }
+                        Log.d("JsonObject",jsonObject.getString("name"));
+                        JSONObject object=new JSONObject(preferences.getString("productsdone","null"));
+                        object.remove(jsonObject.getString("name"));
+                        editor.putString("productsdone",object.toString());
                         editor.putString("Cartitems", cart.toString());
                         editor.apply();
                         Log.d("cartvalue", cart.toString());

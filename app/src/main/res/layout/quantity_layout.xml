@@ -120,7 +120,7 @@
         android:layout_alignParentBottom="true"
         android:text="Add Item"
         android:textSize="20sp"
-        app:cornerRadius="20dp" />
+         />
 
     <TextView
         android:id="@+id/errormessage"

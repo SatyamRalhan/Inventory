@@ -10,15 +10,19 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Addquantity extends AppCompatActivity {
-    String response;
+    ImageView image;
+    String response,images75;
     MaterialCardView cardView;
     TextView name, currentstock, unit, error;
     EditText quantity;
@@ -34,25 +38,13 @@ public class Addquantity extends AppCompatActivity {
 
             try {
                 String productsdone = preferences.getString("productsdone", "null");
-                try {
-                    JSONObject object;
-                    if (productsdone.contains("{")) {
-                        object = new JSONObject(productsdone);
-                    } else {
-                        object = new JSONObject();
-                    }
-                    object.put(bundle.getString("name"), "yes");
-                    editor.putString("productsdone", object.toString());
-                    editor.apply();
-                    Log.d("productedadded", preferences.getString("productsdone", null));
-                } catch (JSONException e) {
-                }
                 JSONObject object = new JSONObject();
                 object.put("name", bundle.getString("name"));
                 object.put("skucode", bundle.getString("skucode"));
                 object.put("quantity", quantity.getText().toString() + unit.getText().toString());
                 object.put("currentStock", bundle.getString("currentstock"));
                 object.put("outletProduct", bundle.getString("_id"));
+                object.put("url",bundle.getString("url"));
 
                 String cart = preferences.getString("Cartitems", null);
                 Log.d("checkingquantity", quantity.getText().toString());
@@ -73,6 +65,15 @@ public class Addquantity extends AppCompatActivity {
                         array = new JSONArray();
                     }
                     array.put(object);
+                    JSONObject object1;
+                    if (productsdone.contains("{")) {
+                        object1 = new JSONObject(productsdone);
+                    } else {
+                        object1 = new JSONObject();
+                    }
+                    object1.put(bundle.getString("name"), "yes");
+                    editor.putString("productsdone", object1.toString());
+                    Log.d("productedadded", preferences.getString("productsdone", null));
                     editor.putString("Cartitems", array.toString());
                     editor.apply();
                     Toast.makeText(Addquantity.this, "Item Added To the the cart", Toast.LENGTH_SHORT).show();
@@ -94,6 +95,7 @@ public class Addquantity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.quantity_layout);
+        images75=getString(R.string.images75);
         bundle = getIntent().getExtras();
         button = findViewById(R.id.back_buttonaddquantity);
         button.setOnClickListener(backlistener);
@@ -107,6 +109,13 @@ public class Addquantity extends AppCompatActivity {
         unit = findViewById(R.id.unit);
         cardView = findViewById(R.id.itemcard);
         name = cardView.findViewById(R.id.setproductname);
+        image=findViewById(R.id.setproductimage);
+        final String url=bundle.getString("url");
+        Picasso.get()
+                .load(images75+url)
+                .resize(40, 40)
+                .centerCrop()
+                .into(image);
         currentstock = cardView.findViewById(R.id.currentstock);
         additem = findViewById(R.id.additembutton);
         additem.setOnClickListener(additemlistener);
