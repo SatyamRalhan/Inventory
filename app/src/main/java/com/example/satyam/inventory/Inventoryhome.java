@@ -240,6 +240,9 @@ public class Inventoryhome extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inventoryhome);
+        findViewById(R.id.bottom2).findViewById(R.id.inventory).setSelected(true);
+        findViewById(R.id.bottom2).findViewById(R.id.home).setSelected(false);
+        findViewById(R.id.bottom2).findViewById(R.id.stocktransfer).setSelected(false);
         b=findViewById(R.id.button2);
         b.setSelected(false);
         b.setBackgroundResource(R.drawable.button_left);
@@ -252,7 +255,7 @@ public class Inventoryhome extends AppCompatActivity {
         refno = findViewById(R.id.inventoryedit3);
         preferences = this.getSharedPreferences(BuildConfig.APPLICATION_ID, MODE_PRIVATE);
         editor=preferences.edit();
-        bottomNavigationView = findViewById(R.id.bottom1);
+        bottomNavigationView = findViewById(R.id.bottom2);
         bottomNavigationView.setOnNavigationItemSelectedListener(bottomnavlistener);
         String outlets=preferences.getString("outlets",null);
         String currentoutlet = preferences.getString("Currentoutlet", null);

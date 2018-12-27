@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -28,7 +29,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class Home extends AppCompatActivity {
-    TextView textView;
+    Button textView;
     boolean inventorytaken;
     ImageView right;
     BottomNavigationView bottomNavigationView;
@@ -72,6 +73,9 @@ public class Home extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         ImageButton imageButton=findViewById(R.id.ib1);
+        findViewById(R.id.bottom1).findViewById(R.id.inventory).setSelected(false);
+        findViewById(R.id.bottom1).findViewById(R.id.home).setSelected(true);
+        findViewById(R.id.bottom1).findViewById(R.id.stocktransfer).setSelected(false);
         preferences = this.getSharedPreferences(BuildConfig.APPLICATION_ID, MODE_PRIVATE);
         editor=preferences.edit();
         editor.remove("Cartitems");
