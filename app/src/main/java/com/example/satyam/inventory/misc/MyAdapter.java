@@ -25,30 +25,23 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     private String[] mDataset;
 
 
-    // Provide a suitable constructor (depends on the kind of dataset)
     public MyAdapter(String[] myDataset) {
         mDataset = myDataset;
     }
 
-    // Create new views (invoked by the layout manager)
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent,
                                                      int viewType) {
-        // create a new view
         View listview=LayoutInflater.from(parent.getContext())  .inflate(R.layout.outlet_show,parent,false);
         return (new MyViewHolder(listview));
     }
 
-    // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        // - get element from your dataset at this position
-        // - replace the contents of the view with that element
         holder.mTextView.setText(mDataset[position]);
 
     }
 
-    // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
         return mDataset.length;
@@ -60,9 +53,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     }
 
 
-    // Provide a reference to the views for each data item
-    // Complex data items may need more than one view per item, and
-    // you provide access to all the views for a data item in a view holder
+
     public static class MyViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         SharedPreferences preferences;
         SharedPreferences.Editor editor;
@@ -81,7 +72,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
             if(view.getContext() instanceof Searchable){
             Intent intent=new Intent(view.getContext(),Addquantity.class);
             intent.putExtra("itemname",((TextView) view.findViewById(R.id.new_text)).getText());
-            view.getContext().startActivity(intent);}
+            view.getContext().startActivity(intent);
+            ((Searchable) view.getContext()).finish();}
             else{
                 Intent intent=new Intent(view.getContext(),Home.class);
                 editor.putString("Currentoutlet", ((TextView) view.findViewById(R.id.new_text)).getText().toString());

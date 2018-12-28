@@ -41,6 +41,7 @@ public class Home extends AppCompatActivity {
                 case(R.id.inventory):
                     intent=new Intent(Home.this,Inventoryhome.class);
                     startActivity(intent);
+                    finish();
                     break;
             }
             return false;
@@ -56,6 +57,7 @@ public class Home extends AppCompatActivity {
         public void onClick(View view) {
             Intent outlet_change=new Intent(Home.this,Outletchange.class);
             startActivity(outlet_change);
+            finish();
         }
     };
     private DrawerLayout drawerLayout;
@@ -92,9 +94,31 @@ public class Home extends AppCompatActivity {
         editor.putString("searchopened","no");
         editor.apply();
         ///////////////////////////////  SETTING UP FOR LOGIN///////////////
-
-
-
+        JsonArrayRequest jsonObjRequest1 = new JsonArrayRequest
+                (Request.Method.GET, getString(R.string.outlets), null, new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray respons) {
+                        try {
+                            if (preferences.getBoolean("firstrun", true)) {
+                                editor.putString("Currentoutlet", respons.getJSONObject(0).getString("name"));
+                            }
+                            editor.putBoolean("firstrun", false);
+                        } catch (JSONException e) {
+                        }
+                        editor.putString("outlets", respons.toString());
+                        editor.apply();
+                        Log.d("responsetostring", respons.toString());
+                    }
+                },
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error1) {
+                                Log.e("response error", error1.getMessage());
+                            }
+                        });
+        volleyController = VolleyController.getInstance(Home.this);
+        volleyController.addToRequestQueue(jsonObjRequest1);
+/////////////////////////////
         textView.setOnClickListener(changeoutlet);
         textView.setText(preferences.getString("Currentoutlet", null));
     }

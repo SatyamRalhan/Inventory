@@ -30,6 +30,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -53,6 +54,7 @@ public class Inventoryhome extends AppCompatActivity {
     String final_date=dateFormat.format(date);
     SimpleDateFormat dateview=new SimpleDateFormat("dd-MM-yyyy");
     TextInputLayout textInputLayout;
+    Boolean backpressed;
     Button b1;
     Button b,b2;
     View.OnClickListener listener=new View.OnClickListener() {
@@ -240,6 +242,7 @@ public class Inventoryhome extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_inventoryhome);
+        backpressed=false;
         findViewById(R.id.bottom2).findViewById(R.id.inventory).setSelected(true);
         findViewById(R.id.bottom2).findViewById(R.id.home).setSelected(false);
         findViewById(R.id.bottom2).findViewById(R.id.stocktransfer).setSelected(false);
@@ -330,8 +333,14 @@ public class Inventoryhome extends AppCompatActivity {
             Log.d("fornavbar","the function is not doing the work");
         }
         else {
+            if(backpressed){
+                finish();
+            }
+            else{
+                Toast.makeText(this, "Press back again to exit", Toast.LENGTH_SHORT).show();
+                backpressed=true;
+            }
             Log.d("fornavbar","the if is not doing the work");
-            super.onBackPressed();
         }
     }
 ////////////////////////////////////////////////////////////////////
