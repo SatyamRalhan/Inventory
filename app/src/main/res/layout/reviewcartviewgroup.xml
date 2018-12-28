@@ -23,6 +23,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="5dp"
         android:layout_toRightOf="@id/productimage"
+        android:textColor="@color/primary_text"
         android:textStyle="bold" />
 
     <TextView
@@ -55,16 +56,17 @@
         android:layout_marginStart="5dp"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"
-        android:layout_toEndOf="@+id/fixedtext" />
+        android:layout_toEndOf="@+id/fixedtext"
+        android:textColor="@color/primary_text" />
 
     <android.support.v7.widget.AppCompatImageButton
         android:id="@+id/deletebutton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:layout_width="39dp"
+        android:layout_height="44dp"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="35dp"
-        android:layout_marginEnd="16dp"
-        android:background="@color/white"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="6dp"
+        android:backgroundTint="@color/white"
+        android:background="?attr/selectableItemBackground"
         android:src="@drawable/delete_black" />
 </RelativeLayout>

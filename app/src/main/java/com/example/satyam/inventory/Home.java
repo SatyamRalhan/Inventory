@@ -92,58 +92,8 @@ public class Home extends AppCompatActivity {
         editor.putString("searchopened","no");
         editor.apply();
         ///////////////////////////////  SETTING UP FOR LOGIN///////////////
-        final JSONObject jsonObject=new JSONObject();
-        try {
-            jsonObject.put("username","+91-9999777777");
-            jsonObject.put("password","applemango");
-        }
-        catch (JSONException e){
-            e.printStackTrace();
-        }
 
-        JsonObjectRequest jsonObjRequest = new JsonObjectRequest
-                (Request.Method.POST, getString(R.string.sign_in), jsonObject, new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        Log.d("responsecheck", "getting response");
-                        try {
-                            editor.putString("b_id", response.getString("_id"));
-                            editor.apply();
-                        } catch (JSONException e) {
-                        }
-                        JsonArrayRequest jsonObjRequest1 = new JsonArrayRequest
-                                (Request.Method.GET, getString(R.string.outlets), null, new Response.Listener<JSONArray>() {
-                                    @Override
-                                    public void onResponse(JSONArray respons) {
-                                        try {
-                                            if (preferences.getBoolean("firstrun", true)) {
-                                                editor.putString("Currentoutlet", respons.getJSONObject(0).getString("name"));
-                                            }
-                                            editor.putBoolean("firstrun", false);
-                                        } catch (JSONException e) {
-                                        }
-                                        editor.putString("outlets", respons.toString());
-                                        editor.apply();
-                                        Log.d("responsetostring", respons.toString());
-                                    }
-                                },
-                                        new Response.ErrorListener() {
-                                            @Override
-                                            public void onErrorResponse(VolleyError error1) {
-                                                Log.e("response error", error1.getMessage());
-                                            }
-                                        });
-                        volleyController.addToRequestQueue(jsonObjRequest1);
-                    }
-                },
-                        new Response.ErrorListener() {
-                            @Override
 
-                            public void onErrorResponse(VolleyError error) {
-                            }
-                        });
-        volleyController = VolleyController.getInstance(Home.this);
-        volleyController.addToRequestQueue(jsonObjRequest);
 
         textView.setOnClickListener(changeoutlet);
         textView.setText(preferences.getString("Currentoutlet", null));

@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.satyam.inventory.BuildConfig;
 import com.example.satyam.inventory.Cartreview;
@@ -77,6 +78,7 @@ public class Reviewcartadapter extends RecyclerView.Adapter<Reviewcartadapter.My
                         Intent intent = new Intent(context, Cartreview.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                         context.startActivity(intent);
+                        Toast.makeText(view.getContext(),"Item "+jsonObject.getString("name")+"is deleted",Toast.LENGTH_SHORT).show();
                     } catch (JSONException er) {
                     }
                 }
