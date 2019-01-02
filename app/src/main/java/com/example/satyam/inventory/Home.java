@@ -2,7 +2,6 @@ package com.example.satyam.inventory;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -15,22 +14,19 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.satyam.inventory.misc.VolleyController;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 public class Home extends AppCompatActivity {
     Button textView;
-    boolean inventorytaken;
+    boolean inventoryTaken;
     ImageView right;
     BottomNavigationView bottomNavigationView;
     Intent intent;
@@ -85,8 +81,7 @@ public class Home extends AppCompatActivity {
         drawerLayout = findViewById(R.id.dwlay1);
         navigationView = findViewById(R.id.navview1);
         imageButton.setOnClickListener(navlistener);
-        inventorytaken=false;
-        IfInventoryTaken();
+        inventoryTaken =false;
         bottomNavigationView=findViewById(R.id.bottom1);
         bottomNavigationView.setOnNavigationItemSelectedListener(bottomnavlistener);
         textView=findViewById(R.id.outlet_name);
@@ -99,11 +94,12 @@ public class Home extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONArray respons) {
                         try {
-                            if (preferences.getBoolean("firstrun", true)) {
-                                editor.putString("Currentoutlet", respons.getJSONObject(0).getString("name"));
-                            }
+//                            if (preferences.getBoolean("firstrun", true)) {
+                                editor.putString("Currentoutlet", respons.getJSONObject(0).optString("name","noname"));
+//                            }
                             editor.putBoolean("firstrun", false);
                         } catch (JSONException e) {
+                            Log.d("Exceptioncoming","yes");
                         }
                         editor.putString("outlets", respons.toString());
                         editor.apply();
@@ -113,7 +109,7 @@ public class Home extends AppCompatActivity {
                         new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error1) {
-                                Log.e("response error", error1.getMessage());
+                                Log.e("response error", error1 + "");
                             }
                         });
         volleyController = VolleyController.getInstance(Home.this);
@@ -135,18 +131,5 @@ public class Home extends AppCompatActivity {
     }
 
 //////////////////////////////////////
-    public void IfInventoryTaken(){
-        right=findViewById(R.id.done1);
-
-        if(inventorytaken){
-            right.setBackgroundColor(Color.parseColor("#0aa60a"));
-            right.setImageResource(R.drawable.done_white);
-        }
-        else{
-            right.setBackgroundColor(Color.parseColor("#ce0a0b"));
-            right.setImageResource(R.drawable.close_white);
-        }
-    }
-
 
 }

@@ -79,7 +79,7 @@ public class Inventoryhome extends AppCompatActivity {
         }
     };
     TextInputEditText refno;
-    EditText textInputEditText1,textInputEditText;
+    EditText textInputEditText1, textInputEditText;
     String store;
     VolleyController volleyController;
     SharedPreferences preferences;
@@ -171,9 +171,20 @@ public class Inventoryhome extends AppCompatActivity {
             int hour = c.get(Calendar.HOUR_OF_DAY);
             int minute = c.get(Calendar.MINUTE);
 
+            final DatePickerDialog datePickerDialog = new DatePickerDialog(Inventoryhome.this,new DatePickerDialog.OnDateSetListener() {
+
+                @Override
+                public void onDateSet(DatePicker view, int year,
+                                      int monthOfYear, int dayOfMonth) {
+                    store=dayOfMonth + "-" + (monthOfYear + 1) + "-" + year;
+                    strorereverse = year + "-" + (monthOfYear + 1) + "-" + dayOfMonth;
+
+                }
+            }, mYear, mMonth, mDay);
 
 
-            TimePickerDialog timePickerDialog=new TimePickerDialog(Inventoryhome.this, new TimePickerDialog.OnTimeSetListener() {
+            TimePickerDialog timePickerDialog = new TimePickerDialog(Inventoryhome.this,
+                    new TimePickerDialog.OnTimeSetListener() {
                 @Override
                 public void onTimeSet(TimePicker timePicker, int i, int i1) {
                     String min, hr, dateoflog, a;
@@ -207,22 +218,12 @@ public class Inventoryhome extends AppCompatActivity {
                         store = store + " " + i + ":" + min + a;
                     }
                     textInputEditText.setText(store);
+                    datePickerDialog.show();
+
                 }
             },hour,minute,false);
 
-            DatePickerDialog datePickerDialog=new DatePickerDialog(Inventoryhome.this,new DatePickerDialog.OnDateSetListener() {
-
-                @Override
-                public void onDateSet(DatePicker view, int year,
-                                      int monthOfYear, int dayOfMonth) {
-                    store=dayOfMonth + "-" + (monthOfYear + 1) + "-" + year;
-                    strorereverse = year + "-" + (monthOfYear + 1) + "-" + dayOfMonth;
-
-                }
-            }, mYear, mMonth, mDay);
-
             timePickerDialog.show();
-            datePickerDialog.show();
 
         }
     };

@@ -219,8 +219,8 @@ public class Searchable extends AppCompatActivity {
             object.put("skucode", outletproduct.getJSONObject(j).getJSONObject("product").getString("skuProductCode"));
             object.put("currentstock", Integer.toString(outletproduct.getJSONObject(j).getInt("currentStock")));
             object.put("_id", outletproduct.getJSONObject(j).getString("_id"));
-            object.put("url",outletproduct.getJSONObject(j).getJSONObject("product").getJSONArray("imagesURLs").getString(0));
-            Log.d("url",outletproduct.getJSONObject(j).getJSONObject("product").getJSONArray("imagesURLs").getString(0));
+            object.put("url",outletproduct.getJSONObject(j).getJSONObject("product").getJSONArray("imagesURLs").optString(0,"noimage"));
+//            Log.d("url",outletproduct.getJSONObject(j).getJSONObject("product").getJSONArray("imagesURLs").getString(0));
             object.put("units",outletproduct.getJSONObject(j).getJSONObject("product").getJSONArray("stockUnits").toString());
         } catch (JSONException e) {
         }

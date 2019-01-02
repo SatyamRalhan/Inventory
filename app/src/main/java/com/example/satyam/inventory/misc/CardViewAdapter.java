@@ -5,12 +5,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.satyam.inventory.Addquantity;
 import com.example.satyam.inventory.R;
@@ -36,8 +38,9 @@ public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.MyView
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public void onBindViewHolder(final MyViewHolder holder, int position) {
         try {
+
             String images75=holder.cardView.getContext().getString(R.string.images75);
             final JSONObject jsonObject = mDataset.getJSONObject(position);
             holder.name.setText(jsonObject.getString("name"));
@@ -46,10 +49,11 @@ public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.MyView
             holder.skucode.setText(jsonObject.getString("skucode"));
             final String url=jsonObject.getString("url");
             Picasso.get()
-                    .load(images75+url)
+                    .load(images75 + url)
                     .resize(40, 40)
-                    .centerCrop()
+                    .centerCrop().placeholder(R.drawable.delete_black)
                     .into(holder.imageView);
+
             holder.cardView.setOnClickListener(new View.OnClickListener() {
 
                 @Override
@@ -74,7 +78,8 @@ public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.MyView
 
                 }
             });
-        } catch (JSONException e) {
+        } catch (Exception e) {
+            Log.e("Card View Error", e.getMessage());
         }
 
 
