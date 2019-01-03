@@ -103,6 +103,7 @@ public class Inventoryhome extends AppCompatActivity {
                         public void onClick(View view) {
                             intent = new Intent(Inventoryhome.this, Home.class);
                             startActivity(intent);
+                            finish();
                         }
                     });
                     dialog.findViewById(R.id.close_button).setOnClickListener(new View.OnClickListener() {
@@ -136,6 +137,7 @@ public class Inventoryhome extends AppCompatActivity {
             editor.apply();
             Intent intent=new Intent(Inventoryhome.this,Searchable.class);
             startActivity(intent);
+            finish();
         }
     };
 //////////////////////   Date and Time Selection ///////////////////

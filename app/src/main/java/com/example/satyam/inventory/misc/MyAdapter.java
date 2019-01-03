@@ -13,6 +13,7 @@ import android.widget.TextView;
 import com.example.satyam.inventory.Addquantity;
 import com.example.satyam.inventory.BuildConfig;
 import com.example.satyam.inventory.Home;
+import com.example.satyam.inventory.Outletchange;
 import com.example.satyam.inventory.R;
 import com.example.satyam.inventory.Searchable;
 
@@ -67,13 +68,14 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         @Override
         public void onClick(View view) {
 
+            final Outletchange outletchange=new Outletchange();
             preferences = view.getContext().getSharedPreferences(BuildConfig.APPLICATION_ID, view.getContext().MODE_PRIVATE);
             editor = preferences.edit();
             if(view.getContext() instanceof Searchable){
             Intent intent=new Intent(view.getContext(),Addquantity.class);
             intent.putExtra("itemname",((TextView) view.findViewById(R.id.new_text)).getText());
             view.getContext().startActivity(intent);
-            ((Searchable) view.getContext()).finish();}
+            outletchange.finish();}
             else{
                 Intent intent=new Intent(view.getContext(),Home.class);
                 editor.putString("Currentoutlet", ((TextView) view.findViewById(R.id.new_text)).getText().toString());

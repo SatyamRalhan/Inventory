@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.example.satyam.inventory.Addquantity;
 import com.example.satyam.inventory.R;
+import com.example.satyam.inventory.Searchable;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -43,6 +44,7 @@ public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.MyView
 
             String images75=holder.cardView.getContext().getString(R.string.images75);
             final JSONObject jsonObject = mDataset.getJSONObject(position);
+            final Searchable searchable=new Searchable();
             holder.name.setText(jsonObject.getString("name"));
             holder.base.setText(jsonObject.getString("baseunit"));
             holder.current.setText(jsonObject.getString("currentstock"));
@@ -51,7 +53,7 @@ public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.MyView
             Picasso.get()
                     .load(images75 + url)
                     .resize(40, 40)
-                    .centerCrop().placeholder(R.drawable.delete_black)
+                    .centerCrop().placeholder(R.drawable.noimage)
                     .into(holder.imageView);
 
             holder.cardView.setOnClickListener(new View.OnClickListener() {
@@ -75,6 +77,7 @@ public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.MyView
                     } catch (JSONException e) {
                     }
                     context.startActivity(intent);
+                    searchable.finish();
 
                 }
             });

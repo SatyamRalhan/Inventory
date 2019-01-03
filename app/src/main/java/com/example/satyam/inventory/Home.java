@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -27,6 +28,7 @@ import org.json.JSONException;
 public class Home extends AppCompatActivity {
     Button textView;
     boolean inventoryTaken;
+    boolean backpressed;
     ImageView right;
     BottomNavigationView bottomNavigationView;
     Intent intent;
@@ -88,6 +90,7 @@ public class Home extends AppCompatActivity {
         editor.putString("productsdone","null");
         editor.putString("searchopened","no");
         editor.apply();
+        backpressed=false;
         ///////////////////////////////  SETTING UP FOR LOGIN///////////////
         JsonArrayRequest jsonObjRequest1 = new JsonArrayRequest
                 (Request.Method.GET, getString(R.string.outlets), null, new Response.Listener<JSONArray>() {
@@ -126,8 +129,14 @@ public class Home extends AppCompatActivity {
             drawerLayout.closeDrawer(navigationView);
         }
         else {
-            super.onBackPressed();
-        }
+            if(backpressed){
+                finish();
+            }
+            else{
+                Toast.makeText(this, "Press back again to exit", Toast.LENGTH_SHORT).show();
+                backpressed=true;
+            }
+            Log.d("fornavbar","the if is not doing the work");        }
     }
 
 //////////////////////////////////////

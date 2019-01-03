@@ -62,6 +62,7 @@ public class Searchable extends AppCompatActivity {
             if(searchView.isIconified()){
                 Intent intent = new Intent(Searchable.this, Inventoryhome.class);
                 startActivity(intent);
+                finish();
             }
             else{
                 searchView.setIconified(true);
@@ -82,6 +83,7 @@ public class Searchable extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(Searchable.this, Cartreview.class);
                 startActivity(intent);
+                finish();
             }
         });
         //////////////////////////////
@@ -209,6 +211,7 @@ public class Searchable extends AppCompatActivity {
     public void onBackPressed() {
         Intent intent = new Intent(Searchable.this, Inventoryhome.class);
         startActivity(intent);
+        finish();
     }
 
     private JSONObject putit(int j) {

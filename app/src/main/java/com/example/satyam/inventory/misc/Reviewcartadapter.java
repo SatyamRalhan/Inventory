@@ -55,7 +55,7 @@ public class Reviewcartadapter extends RecyclerView.Adapter<Reviewcartadapter.My
             Picasso.get()
                     .load(images75+url)
                     .resize(40, 40)
-                    .centerCrop()
+                    .centerCrop().placeholder(R.drawable.noimage)
                     .into(holder.imageView);
             holder.button.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -74,10 +74,11 @@ public class Reviewcartadapter extends RecyclerView.Adapter<Reviewcartadapter.My
                         editor.putString("Cartitems", cart.toString());
                         editor.apply();
                         Log.d("cartvalue", cart.toString());
-                        cartreview.finish();
                         Intent intent = new Intent(context, Cartreview.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                         context.startActivity(intent);
+                        cartreview.finish();
+
                         Toast.makeText(view.getContext(),"Item "+jsonObject.getString("name")+"is deleted",Toast.LENGTH_SHORT).show();
                     } catch (JSONException er) {
                     }

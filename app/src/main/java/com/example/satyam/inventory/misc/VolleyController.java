@@ -9,6 +9,7 @@ import com.android.volley.toolbox.Volley;
 
 import java.net.CookieHandler;
 import java.net.CookieManager;
+import java.net.CookiePolicy;
 
 import static android.R.attr.tag;
 
@@ -26,7 +27,8 @@ public class VolleyController {
 
     private VolleyController(Context context) {
         mContext = context;
-        CookieManager cookieManager = new CookieManager();
+        CookieManager cookieManager = new CookieManager(new CookieController(context),
+                CookiePolicy.ACCEPT_ALL);
         CookieHandler.setDefault(cookieManager);
         mRequestQueue = getRequestQueue();
     }

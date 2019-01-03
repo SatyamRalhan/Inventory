@@ -84,6 +84,7 @@ public class Addquantity extends AppCompatActivity {
                     Toast.makeText(Addquantity.this, "Item Added To the the cart", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(Addquantity.this, Searchable.class);
                     startActivity(intent);
+                    finish();
                 }
             } catch (JSONException e) {
             }
@@ -128,7 +129,7 @@ public class Addquantity extends AppCompatActivity {
         Picasso.get()
                 .load(images75+url)
                 .resize(150, 150)
-                .centerCrop()
+                .centerCrop().placeholder(R.drawable.noimage)
                 .into(image);
         currentstock = findViewById(R.id.currentstock);
         additem = findViewById(R.id.additembutton);
